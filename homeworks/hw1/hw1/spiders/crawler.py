@@ -1,11 +1,12 @@
 import scrapy
+from .. import items
 
 
 class IhnedSpider(scrapy.Spider):
     name = 'ihned'
     start_urls = ['http://byznys.ihned.cz/dalsi-clanky/']
 
-    scrape_pages_limit = 5
+    scrape_pages_limit = 1
 
     def __init__(self):
         super().__init__()
@@ -16,10 +17,17 @@ class IhnedSpider(scrapy.Spider):
         name = response.css('div.author-info a::text').extract_first()
         print("Parsing author: {}".format(name))
 
-        # TODO figure out how to output separate items in json
-        # yield {
-        #     'author_name': name
-        # }
+        info_list = response.css('div.author-info::text').extract()
+        info = "; ".join([info_item.strip() for info_item in info_list if info_item.strip()])
+
+        author = items.Author()
+        author['name'] = name,
+        author['info'] = info,
+        author['url'] = response.url
+
+        article = response.meta['article']
+        article['author'] = author
+        yield article
 
     def parse_article(self, response):
         title = response.css('h1::text').extract_first()
@@ -39,25 +47,22 @@ class IhnedSpider(scrapy.Spider):
         for heading in paragraph_headings:
             print("  \"{}\"".format(heading))
 
-        # TODO fotogalerie vs článek
+            # TODO fotogalerie vs článek
 
-        author_name = response.css('div.article-info p.author a::text').extract_first()
+        article = items.Article()
+        article['title'] = title
+        article['headlines'] = headlines
+        article['content'] = content
+        article['paragraph_headings'] = paragraph_headings
+        article['url'] = response.url
+
         author_url = response.css('div.article-info p.author a::attr(href)').extract_first()
-        print("Author url: {}".format(author_url))
-        yield scrapy.Request(response.urljoin(author_url), callback=self.parse_author)
-
-        yield {
-            'title': title,
-            'headlines': headlines,
-            'content': content,
-            'paragraph_headings': paragraph_headings,
-            'author': author_name,
-            'url': response.url
-        }
+        yield scrapy.Request(response.urljoin(author_url), callback=self.parse_author, meta={'article': article})
 
     def parse(self, response):
         if self.scraped_pages + 1 > self.scrape_pages_limit:
-            print("Already scraped {} pages. {} is limit, so returning.".format(self.scraped_pages, self.scrape_pages_limit))
+            print("Already scraped {} pages. {} is limit, so returning.".format(self.scraped_pages,
+                                                                                self.scrape_pages_limit))
             return
         else:
             self.scraped_pages += 1

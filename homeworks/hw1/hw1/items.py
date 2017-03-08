@@ -8,7 +8,14 @@
 import scrapy
 
 
-class Hw1Item(scrapy.Item):
-    # define the fields for your item here like:
-    # name = scrapy.Field()
-    pass
+class Article(scrapy.Item):
+    title = scrapy.Field()
+    headlines = scrapy.Field()
+    content = scrapy.Field()
+    paragraph_headings = scrapy.Field()
+    url = scrapy.Field()
+    author = scrapy.Field()
+
+
+class Author(scrapy.Item):
+    name = scrapy.Field()
