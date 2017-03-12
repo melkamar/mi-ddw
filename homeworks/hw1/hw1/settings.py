@@ -26,7 +26,7 @@ ROBOTSTXT_OBEY = True
 # Configure a delay for requests for the same website (default: 0)
 # See http://scrapy.readthedocs.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
-DOWNLOAD_DELAY = 0
+DOWNLOAD_DELAY = 1
 
 FEED_FORMAT = 'json'
 FEED_EXPORT_ENCODING = 'utf-8'
