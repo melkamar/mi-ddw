@@ -8,7 +8,13 @@
 import scrapy
 
 
-class Article(scrapy.Item):
+class ExtendableItem(scrapy.Item):
+    def __setitem__(self, key, value):
+        self._values[key] = value
+        self.fields[key] = {}
+
+
+class Article(ExtendableItem):
     title = scrapy.Field()
     headlines = scrapy.Field()
     content = scrapy.Field()
@@ -17,5 +23,19 @@ class Article(scrapy.Item):
     author = scrapy.Field()
 
 
+class Photogallery(ExtendableItem):
+    title = scrapy.Field()
+    photos = scrapy.Field()
+    url = scrapy.Field()
+    author = scrapy.Field()
+
+
+class Photo(scrapy.Item):
+    name = scrapy.Field()
+    url = scrapy.Field()
+
+
 class Author(scrapy.Item):
     name = scrapy.Field()
+    info = scrapy.Field()
+    url = scrapy.Field()

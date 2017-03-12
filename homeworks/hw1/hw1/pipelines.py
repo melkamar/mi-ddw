@@ -9,11 +9,13 @@ from . import items
 
 
 class Hw1Pipeline(object):
-    def process_item(self, item, spider):
-        return item
-
     # def process_item(self, item, spider):
-    #     if isinstance(item, items.Author):
-    #         return {'author': item}
-    #     elif isinstance(item, items.Article):
-    #         return {'article': item}
+    #     return item
+
+    def process_item(self, item, spider):
+        if isinstance(item, items.Article):
+            item['type'] = 'article'
+            return item
+        elif isinstance(item, items.Photogallery):
+            item['type'] = 'gallery'
+            return item

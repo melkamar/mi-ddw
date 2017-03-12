@@ -15,7 +15,7 @@ SPIDER_MODULES = ['hw1.spiders']
 NEWSPIDER_MODULE = 'hw1.spiders'
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
-USER_AGENT = 'melkamar'
+USER_AGENT = 'melkamar-spider'
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = True
