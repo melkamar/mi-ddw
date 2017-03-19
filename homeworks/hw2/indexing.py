@@ -2,6 +2,7 @@
 from sklearn.metrics.pairwise import cosine_similarity, euclidean_distances
 from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
 import numpy as np
+import scipy.sparse
 from pprint import pprint
 
 data = []
@@ -9,16 +10,16 @@ data = []
 
 def get_data():
     """ Return list of strings, each string is one document. """
-    # return data if data else ['this is a sample string',
-    #                           'second string is like the first',
-    #                           "the the the xoxoxo"]
-    return data if data else [open("./data/d/" + str(d + 1) + ".txt").read() for d in range(1400)]
+    return data if data else ['this is a sample string',
+                              'second string is like the first',
+                              "the the the xoxoxo"]
+    # return data if data else [open("./data/d/" + str(d + 1) + ".txt").read() for d in range(1400)]
 
 
 def get_queries():
     """ Return list of strings, each string is a query. """
-    # return ['sample string']
-    return [open("./data/q/" + str(q) + ".txt").read() for q in [1]]
+    return ['second string']
+    # return [open("./data/q/" + str(q) + ".txt").read() for q in [1]]
 
 
 def get_relevant_docs(query_id):
@@ -88,10 +89,38 @@ def process_query_binary(query):
     print("Cosine: {}".format(cosine_similarities))
 
 
+def process_query_term_frequency(query):
+    data = list(get_data())
+    data.append(query)
+
+    vectorizer = CountVectorizer()
+    count_array = vectorizer.fit_transform(data)
+
+    sums = count_array.sum(1)  # Sum over rows (arg 1), produce a vector.
+    normalized_array = count_array.multiply(1 / sums)  # Normalize all rows - divide each row by its sum.
+
+    # Convert to csr_matrix (multiplication kept returning other type and that threw errors ¯\_(ツ)_/¯
+    normalized_array = scipy.sparse.csr_matrix(normalized_array)
+
+    print(np.array2string(normalized_array.toarray(), max_line_width=800))
+
+    query_vector = normalized_array[len(data) - 1]  # last row is the query
+    data_vectors = normalized_array[0:len(data) - 1]  # anything but last row is data
+
+    # print("Query vector: {}".format(query_vector.toarray()))
+    # print("Data vectors: {}".format(data_vectors.toarray()))
+
+    euclid_distances = calculate_distances_euclidean(query_vector, data_vectors)
+    cosine_similarities = calculate_cosine_similarity(query_vector, data_vectors)
+    print("Euclid: {}".format(euclid_distances))
+    print("Cosine: {}".format(cosine_similarities))
+
+
 def process_queries():
     queries = get_queries()
     for query in queries:
-        process_query_binary(query)
+        # process_query_binary(query)
+        process_query_term_frequency(query)
 
 
 process_queries()
