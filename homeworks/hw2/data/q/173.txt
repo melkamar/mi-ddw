@@ -1,0 +1,1 @@
+references on lyapunov's method on the stability of lineardifferential equations with periodic coefficients .

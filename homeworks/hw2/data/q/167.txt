@@ -1,0 +1,1 @@
+exact solution methods for calculating the ablative mass loss of amaterial ablating at high temperatures in a hypersonic flightenvironment .

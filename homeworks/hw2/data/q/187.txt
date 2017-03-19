@@ -1,0 +1,1 @@
+has anyone analytically or experimentally investigated the effects ofinternal pressure on the buckling of circular-cylindrical shells underbending .

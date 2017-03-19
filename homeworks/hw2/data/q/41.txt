@@ -1,0 +1,1 @@
+has anyone investigated and developed a simple model for the vortexwake behind a cruciform wing .

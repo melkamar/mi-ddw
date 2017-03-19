@@ -1,0 +1,1 @@
+some research on high speed flutter .paper presents brief discussions of many topics currently of interest inthe flutter field . these include /a/ the sonic speed case, /b/oscillating pressure field of propellers, /c/ wing flutter with variousconfigurations including effects of body modes, and /d/ propeller stallflutter .

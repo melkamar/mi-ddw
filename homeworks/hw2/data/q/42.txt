@@ -1,0 +1,1 @@
+what is a criterion that the transonic flow around an airfoil with around leading edge be validly analyzed by the linearized transonic flowtheory .

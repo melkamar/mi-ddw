@@ -1,0 +1,1 @@
+references on the methods available for accurately estimatingaerodynamic heat transfer to conical bodies for both laminar and turbulentflow .

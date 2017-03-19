@@ -1,0 +1,1 @@
+is it possible to relate the available pressure distributions for anogive forebody at zero angle of attack to the lower surface pressures ofan equivalent ogive forebody at angle of attack .

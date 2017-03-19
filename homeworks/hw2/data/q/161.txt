@@ -1,0 +1,1 @@
+is there an integral method to give a single and sufficiently accuratemethod of calculating the laminar separate point for variousincompressible and compressible boundary layers with zero heat transfer .

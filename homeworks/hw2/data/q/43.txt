@@ -1,0 +1,1 @@
+can the transonic flow around an arbitrary smooth thin airfoil beanalysed in a simple approximate way .

@@ -1,0 +1,1 @@
+compressive buckling of simply supported plates withtransverse stiffeners .charts are presented for the analysis of the stability underlongitudinal compression of simply supported rectangular plates withseveral equally spaced transverse stiffeners that have both torsionaland flexural rigidity .

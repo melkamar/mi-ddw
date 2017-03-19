@@ -1,0 +1,1 @@
+did anyone else discover that the turbulent skin friction is not oversensitive to the nature of the variation of the viscosity withtemperature .

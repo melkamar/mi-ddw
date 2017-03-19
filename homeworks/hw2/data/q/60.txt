@@ -1,0 +1,1 @@
+is there any simple,  but practical,  method for numerical integrationof the mixing problem (i.e. the blasius problem with three-pointboundary conditions) .

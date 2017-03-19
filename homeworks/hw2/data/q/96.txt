@@ -1,0 +1,1 @@
+has anyone investigated the unsteady lift distributions on finitewings in subsonic flow .

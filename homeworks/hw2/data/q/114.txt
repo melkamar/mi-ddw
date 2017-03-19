@@ -1,0 +1,1 @@
+it is not likely that the airforces on a wing of general planformoscillating in transonic flow can be determined by purely analyticalmethods . is it possible to determine the airforces on a singleparticular planform, such as the rectangular one by such method .

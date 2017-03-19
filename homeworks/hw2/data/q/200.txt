@@ -1,0 +1,1 @@
+are asymptotic methods sufficiently accurate in the determination ofpre-buckling stresses in torispherical shells,  or must we resort tonumerical methods .

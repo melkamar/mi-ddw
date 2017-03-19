@@ -1,0 +1,1 @@
+a variational principle for convection of heat .authors extend variational principle of biot to various cases of heattransfer due to forced convection . numerical results are given forone-dimensional problems of fluid flowing between parallel walls withuniform or parabolic velocity profiles . agreement with exact solutionsis excellent .

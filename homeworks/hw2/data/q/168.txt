@@ -1,0 +1,1 @@
+what approximate solutions are known to the direct problem of transonicflow in the throat of a nozzle,  i.e. finding the flow in a givennozzle .

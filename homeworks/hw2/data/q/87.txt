@@ -1,0 +1,1 @@
+what effect has the boundary layer in modifying the basic inviscid flowbehind the shock,  neglecting effects of leading edge and corner .

@@ -1,0 +1,1 @@
+how far around a cylinder and under what conditions of flow,  if any,is the velocity just outside of the boundary layer a linear function ofthe distance around the cylinder .

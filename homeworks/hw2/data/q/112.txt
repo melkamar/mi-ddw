@@ -1,0 +1,1 @@
+has the solution of the clamped plate problem,  in the classical theoryof bending,  been reduced to two successive membrane boundary valueproblems .

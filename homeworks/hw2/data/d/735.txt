@@ -1,0 +1,1 @@
+the bending of uniformly loaded sectorial plates withclamped edges .this paper analyzes the bending of a sectorial plate,clamped on all edges and subjected to uniformlydistributed load, by using two different methods of superpositionon the elementary solution for a uniformly loaded circularplate with a clamped edge .

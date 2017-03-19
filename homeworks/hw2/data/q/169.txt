@@ -1,0 +1,1 @@
+what approximate solutions are known to the indirect problem oftransonic flow in the throat of a nozzle,  i.e. finding a nozzle whichhas a given axial velocity distribution .

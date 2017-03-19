@@ -1,0 +1,1 @@
+has a theory of quasi-conical flows been developed, in supersoniclinearised theory, for which the upwash distribution on the liftingsurface, apart from being a homogeneous function in theco-ordinate, is permitted to have a quite general functional form .

@@ -1,0 +1,1 @@
+in the problem of the buckling strength of uniform circular cylindersloaded in axial compression,  does the linear solution help withimproving the non-linear one .

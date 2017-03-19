@@ -1,0 +1,1 @@
+has anyone investigated the effect of shock generated vorticity on heattransfer to a blunt body .
