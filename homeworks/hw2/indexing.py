@@ -21,6 +21,7 @@ def get_data():
 def get_queries():
     """ Return list of strings, each string is a query. """
     # return ['the string is a']
+    # return [open("./data/q/" + str(q) + ".txt").read() for q in range(1, 3)]
     return [open("./data/q/" + str(q) + ".txt").read() for q in range(1, 226)]
 
 
@@ -167,6 +168,13 @@ def calculate_recall(retrieved_documents, relevant_documents):
     return relevant_count / len(relevant_documents)
 
 
+def calculate_fmeasure(precision, recall):
+    if precision == 0 and recall == 0:
+        return 0
+
+    return 2 * (precision * recall) / (precision + recall)
+
+
 Query_Results = namedtuple("Query_Results", ["binary_precision",
                                              "binary_recall",
                                              "tf_precision",
@@ -209,136 +217,267 @@ def process_queries():
             tfidf_recall=calculate_recall(tfidf_result.cosine[:len(relevant_docs)], relevant_docs)
         ))
 
-
     binary_euclidean_precision_sum = 0
     binary_cosine_precision_sum = 0
     binary_euclidean_recall_sum = 0
     binary_cosine_recall_sum = 0
+    binary_euclidean_fmeasure_sum = 0
+    binary_cosine_fmeasure_sum = 0
+
     tf_euclidean_precision_sum = 0
     tf_cosine_precision_sum = 0
     tf_euclidean_recall_sum = 0
     tf_cosine_recall_sum = 0
+    tf_euclidean_fmeasure_sum = 0
+    tf_cosine_fmeasure_sum = 0
+
     tfidf_euclidean_precision_sum = 0
     tfidf_cosine_precision_sum = 0
     tfidf_euclidean_recall_sum = 0
     tfidf_cosine_recall_sum = 0
+    tfidf_euclidean_fmeasure_sum = 0
+    tfidf_cosine_fmeasure_sum = 0
 
-    for i, query in enumerate(queries, 1):
-        binary_euclidean_precision = euclidean_results[i - 1].binary_precision
-        binary_cosine_precision = cosine_results[i - 1].binary_precision
-        binary_euclidean_recall = euclidean_results[i - 1].binary_recall
-        binary_cosine_recall = cosine_results[i - 1].binary_recall
-        tf_euclidean_precision = euclidean_results[i - 1].tf_precision
-        tf_cosine_precision = cosine_results[i - 1].tf_precision
-        tf_euclidean_recall = euclidean_results[i - 1].tf_recall
-        tf_cosine_recall = cosine_results[i - 1].tf_recall
-        tfidf_euclidean_precision = euclidean_results[i - 1].tfidf_precision
-        tfidf_cosine_precision = cosine_results[i - 1].tfidf_precision
-        tfidf_euclidean_recall = euclidean_results[i - 1].tfidf_recall
-        tfidf_cosine_recall = cosine_results[i - 1].tfidf_recall
+    import csv
+    with open('output_data.csv', mode='w') as f:
+        with open('output_data_comma.csv', mode='w') as f_comma:
+            writer = csv.writer(f, delimiter=';')
+            writer_comma = csv.writer(f_comma, delimiter=',')
 
-        binary_euclidean_precision_sum +=binary_euclidean_precision
-        binary_cosine_precision_sum += binary_cosine_precision
-        binary_euclidean_recall_sum +=binary_euclidean_recall
-        binary_cosine_recall_sum +=binary_cosine_recall
-        tf_euclidean_precision_sum +=tf_euclidean_precision
-        tf_cosine_precision_sum += tf_cosine_precision
-        tf_euclidean_recall_sum +=tf_euclidean_recall
-        tf_cosine_recall_sum +=tf_cosine_recall
-        tfidf_euclidean_precision_sum +=tfidf_euclidean_precision
-        tfidf_cosine_precision_sum += tfidf_cosine_precision
-        tfidf_euclidean_recall_sum +=tfidf_euclidean_recall
-        tfidf_cosine_recall_sum +=tfidf_cosine_recall
+            csv_row = ['Query #',
+                       'Binary euclidean - precision',
+                       'Binary cosine - precision',
+                       'Binary euclidean - recall',
+                       'Binary cosine - recall',
+                       'Binary euclidean - F-measure',
+                       'Binary cosine - F-measure',
+                       'TF euclidean - precision',
+                       'TF cosine - precision',
+                       'TF euclidean - recall',
+                       'TF cosine - recall',
+                       'TF euclidean - F-measure',
+                       'TF cosine - F-measure',
+                       'TF-IDF euclidean - precision',
+                       'TF-IDF cosine - precision',
+                       'TF-IDF euclidean - recall',
+                       'TF-IDF cosine - recall',
+                       'TF-IDF euclidean - F-measure',
+                       'TF-IDF cosine - F-measure',
+                       ]
+            writer.writerow(csv_row)
+            writer_comma.writerow(csv_row)
 
-        print(
-            """
-            Query #{query_num}
-            -------------------------------------
-            Binary
-                - Precision:
-                    - Euclidean: {binary_euclidean_precision}
-                    - Cosine: {binary_cosine_precision}
-                - Recall:
-                    - Euclidean: {binary_euclidean_recall}
-                    - Cosine: {binary_cosine_recall}
+            for i, query in enumerate(queries, 1):
+                binary_euclidean_precision = euclidean_results[i - 1].binary_precision
+                binary_cosine_precision = cosine_results[i - 1].binary_precision
+                binary_euclidean_recall = euclidean_results[i - 1].binary_recall
+                binary_cosine_recall = cosine_results[i - 1].binary_recall
+                binary_euclidean_fmeasure = calculate_fmeasure(binary_euclidean_precision, binary_euclidean_recall)
+                binary_cosine_fmeasure = calculate_fmeasure(binary_cosine_precision, binary_cosine_recall)
 
-            Term frequency
-                - Precision:
-                    - Euclidean: {tf_euclidean_precision}
-                    - Cosine: {tf_cosine_precision}
-                - Recall:
-                    - Euclidean: {tf_euclidean_recall}
-                    - Cosine: {tf_cosine_recall}
+                tf_euclidean_precision = euclidean_results[i - 1].tf_precision
+                tf_cosine_precision = cosine_results[i - 1].tf_precision
+                tf_euclidean_recall = euclidean_results[i - 1].tf_recall
+                tf_cosine_recall = cosine_results[i - 1].tf_recall
+                tf_euclidean_fmeasure = calculate_fmeasure(tf_euclidean_precision, tf_euclidean_recall)
+                tf_cosine_fmeasure = calculate_fmeasure(tf_cosine_precision, tf_cosine_recall)
 
-            TF-IDF
-                - Precision:
-                    - Euclidean: {tfidf_euclidean_precision}
-                    - Cosine: {tfidf_cosine_precision}
-                - Recall:
-                    - Euclidean: {tfidf_euclidean_recall}
-                    - Cosine: {tfidf_cosine_recall}
-            """.format(
-                query_num=i,
-                binary_euclidean_precision=binary_euclidean_precision,
-                binary_cosine_precision=binary_cosine_precision,
-                binary_euclidean_recall=binary_euclidean_recall,
-                binary_cosine_recall=binary_cosine_recall,
-                tf_euclidean_precision=tf_euclidean_precision,
-                tf_cosine_precision=tf_cosine_precision,
-                tf_euclidean_recall=tf_euclidean_recall,
-                tf_cosine_recall=tf_cosine_recall,
-                tfidf_euclidean_precision=tfidf_euclidean_precision,
-                tfidf_cosine_precision=tfidf_cosine_precision,
-                tfidf_euclidean_recall=tfidf_euclidean_recall,
-                tfidf_cosine_recall=tfidf_cosine_recall,
+                tfidf_euclidean_precision = euclidean_results[i - 1].tfidf_precision
+                tfidf_cosine_precision = cosine_results[i - 1].tfidf_precision
+                tfidf_euclidean_recall = euclidean_results[i - 1].tfidf_recall
+                tfidf_cosine_recall = cosine_results[i - 1].tfidf_recall
+                tfidf_euclidean_fmeasure = calculate_fmeasure(tfidf_euclidean_precision, tfidf_euclidean_recall)
+                tfidf_cosine_fmeasure = calculate_fmeasure(tfidf_cosine_precision, tfidf_cosine_recall)
 
+                # Update sums for later average
+                binary_euclidean_precision_sum += binary_euclidean_precision
+                binary_cosine_precision_sum += binary_cosine_precision
+                binary_euclidean_recall_sum += binary_euclidean_recall
+                binary_cosine_recall_sum += binary_cosine_recall
+                binary_euclidean_fmeasure_sum += binary_euclidean_fmeasure
+                binary_cosine_fmeasure_sum += binary_cosine_fmeasure
+
+                tf_euclidean_precision_sum += tf_euclidean_precision
+                tf_cosine_precision_sum += tf_cosine_precision
+                tf_euclidean_recall_sum += tf_euclidean_recall
+                tf_cosine_recall_sum += tf_cosine_recall
+                tf_euclidean_fmeasure_sum += tf_euclidean_fmeasure
+                tf_cosine_fmeasure_sum += tf_cosine_fmeasure
+
+                tfidf_euclidean_precision_sum += tfidf_euclidean_precision
+                tfidf_cosine_precision_sum += tfidf_cosine_precision
+                tfidf_euclidean_recall_sum += tfidf_euclidean_recall
+                tfidf_cosine_recall_sum += tfidf_cosine_recall
+                tfidf_euclidean_fmeasure_sum += tfidf_euclidean_fmeasure
+                tfidf_cosine_fmeasure_sum += tfidf_cosine_fmeasure
+
+                csv_row = [
+                    i,
+                    binary_euclidean_precision,
+                    binary_cosine_precision,
+                    binary_euclidean_recall,
+                    binary_cosine_recall,
+                    binary_euclidean_fmeasure,
+                    binary_cosine_fmeasure,
+                    tf_euclidean_precision,
+                    tf_cosine_precision,
+                    tf_euclidean_recall,
+                    tf_cosine_recall,
+                    tf_euclidean_fmeasure,
+                    tf_cosine_fmeasure,
+                    tfidf_euclidean_precision,
+                    tfidf_cosine_precision,
+                    tfidf_euclidean_recall,
+                    tfidf_cosine_recall,
+                    tfidf_euclidean_fmeasure,
+                    tfidf_cosine_fmeasure,
+                ]
+                writer.writerow(csv_row)
+                writer_comma.writerow(csv_row)
+
+                print(
+                    """
+                    Query #{query_num}
+                    -------------------------------------
+                    Binary
+                        - Precision:
+                            - Euclidean: {binary_euclidean_precision}
+                            - Cosine: {binary_cosine_precision}
+                        - Recall:
+                            - Euclidean: {binary_euclidean_recall}
+                            - Cosine: {binary_cosine_recall}
+                        - F-Measure:
+                            - Euclidean: {binary_euclidean_fmeasure}
+                            - Cosine: {binary_cosine_fmeasure}
+
+                    Term frequency
+                        - Precision:
+                            - Euclidean: {tf_euclidean_precision}
+                            - Cosine: {tf_cosine_precision}
+                        - Recall:
+                            - Euclidean: {tf_euclidean_recall}
+                            - Cosine: {tf_cosine_recall}
+                        - F-Measure:
+                            - Euclidean: {tf_euclidean_fmeasure}
+                            - Cosine: {tf_cosine_fmeasure}
+
+                    TF-IDF
+                        - Precision:
+                            - Euclidean: {tfidf_euclidean_precision}
+                            - Cosine: {tfidf_cosine_precision}
+                        - Recall:
+                            - Euclidean: {tfidf_euclidean_recall}
+                            - Cosine: {tfidf_cosine_recall}
+                        - F-Measure:
+                            - Euclidean: {tfidf_euclidean_fmeasure}
+                            - Cosine: {tfidf_cosine_fmeasure}
+                    """.format(
+                        query_num=i,
+                        binary_euclidean_precision=binary_euclidean_precision,
+                        binary_cosine_precision=binary_cosine_precision,
+                        binary_euclidean_recall=binary_euclidean_recall,
+                        binary_cosine_recall=binary_cosine_recall,
+                        binary_euclidean_fmeasure=binary_euclidean_fmeasure,
+                        binary_cosine_fmeasure=binary_cosine_fmeasure,
+                        tf_euclidean_precision=tf_euclidean_precision,
+                        tf_cosine_precision=tf_cosine_precision,
+                        tf_euclidean_recall=tf_euclidean_recall,
+                        tf_cosine_recall=tf_cosine_recall,
+                        tf_euclidean_fmeasure=tf_euclidean_fmeasure,
+                        tf_cosine_fmeasure=tf_cosine_fmeasure,
+                        tfidf_euclidean_precision=tfidf_euclidean_precision,
+                        tfidf_cosine_precision=tfidf_cosine_precision,
+                        tfidf_euclidean_recall=tfidf_euclidean_recall,
+                        tfidf_cosine_recall=tfidf_cosine_recall,
+                        tfidf_euclidean_fmeasure=tfidf_euclidean_fmeasure,
+                        tfidf_cosine_fmeasure=tfidf_cosine_fmeasure,
+
+                    )
+                )
+
+            print(
+                """
+                -------------------------------------
+                AVERAGE
+                -------------------------------------
+                    Binary
+                        - Precision:
+                            - Euclidean: {binary_euclidean_precision}
+                            - Cosine: {binary_cosine_precision}
+                        - Recall:
+                            - Euclidean: {binary_euclidean_recall}
+                            - Cosine: {binary_cosine_recall}
+                        - F-Measure:
+                            - Euclidean: {binary_euclidean_fmeasure}
+                            - Cosine: {binary_cosine_fmeasure}
+
+                    Term frequency
+                        - Precision:
+                            - Euclidean: {tf_euclidean_precision}
+                            - Cosine: {tf_cosine_precision}
+                        - Recall:
+                            - Euclidean: {tf_euclidean_recall}
+                            - Cosine: {tf_cosine_recall}
+                        - F-Measure:
+                            - Euclidean: {tf_euclidean_fmeasure}
+                            - Cosine: {tf_cosine_fmeasure}
+
+                    TF-IDF
+                        - Precision:
+                            - Euclidean: {tfidf_euclidean_precision}
+                            - Cosine: {tfidf_cosine_precision}
+                        - Recall:
+                            - Euclidean: {tfidf_euclidean_recall}
+                            - Cosine: {tfidf_cosine_recall}
+                        - F-Measure:
+                            - Euclidean: {tfidf_euclidean_fmeasure}
+                            - Cosine: {tfidf_cosine_fmeasure}
+                """.format(
+                    binary_euclidean_precision=binary_euclidean_precision_sum / len(queries),
+                    binary_cosine_precision=binary_cosine_precision_sum / len(queries),
+                    binary_euclidean_recall=binary_euclidean_recall_sum / len(queries),
+                    binary_cosine_recall=binary_cosine_recall_sum / len(queries),
+                    binary_euclidean_fmeasure=binary_euclidean_fmeasure_sum / len(queries),
+                    binary_cosine_fmeasure=binary_cosine_fmeasure_sum / len(queries),
+                    tf_euclidean_precision=tf_euclidean_precision_sum / len(queries),
+                    tf_cosine_precision=tf_cosine_precision_sum / len(queries),
+                    tf_euclidean_recall=tf_euclidean_recall_sum / len(queries),
+                    tf_cosine_recall=tf_cosine_recall_sum / len(queries),
+                    tf_euclidean_fmeasure=tf_euclidean_fmeasure_sum / len(queries),
+                    tf_cosine_fmeasure=tf_cosine_fmeasure_sum / len(queries),
+                    tfidf_euclidean_precision=tfidf_euclidean_precision_sum / len(queries),
+                    tfidf_cosine_precision=tfidf_cosine_precision_sum / len(queries),
+                    tfidf_euclidean_recall=tfidf_euclidean_recall_sum / len(queries),
+                    tfidf_cosine_recall=tfidf_cosine_recall_sum / len(queries),
+                    tfidf_euclidean_fmeasure=tfidf_euclidean_fmeasure_sum / len(queries),
+                    tfidf_cosine_fmeasure=tfidf_cosine_fmeasure_sum / len(queries),
+
+                )
             )
-        )
 
+            csv_row = [
+                "AVERAGE",
+                binary_euclidean_precision_sum / len(queries),
+                binary_cosine_precision_sum / len(queries),
+                binary_euclidean_recall_sum / len(queries),
+                binary_cosine_recall_sum / len(queries),
+                binary_euclidean_fmeasure_sum / len(queries),
+                binary_cosine_fmeasure_sum / len(queries),
+                tf_euclidean_precision_sum / len(queries),
+                tf_cosine_precision_sum / len(queries),
+                tf_euclidean_recall_sum / len(queries),
+                tf_cosine_recall_sum / len(queries),
+                tf_euclidean_fmeasure_sum / len(queries),
+                tf_cosine_fmeasure_sum / len(queries),
+                tfidf_euclidean_precision_sum / len(queries),
+                tfidf_cosine_precision_sum / len(queries),
+                tfidf_euclidean_recall_sum / len(queries),
+                tfidf_cosine_recall_sum / len(queries),
+                tfidf_euclidean_fmeasure_sum / len(queries),
+                tfidf_cosine_fmeasure_sum / len(queries),
+                ]
+            writer.writerow(csv_row)
+            writer_comma.writerow(csv_row)
 
-    print(
-        """
-        -------------------------------------
-        AVERAGE
-        -------------------------------------
-        Binary
-            - Precision:
-                - Euclidean: {binary_euclidean_precision}
-                - Cosine: {binary_cosine_precision}
-            - Recall:
-                - Euclidean: {binary_euclidean_recall}
-                - Cosine: {binary_cosine_recall}
-
-        Term frequency
-            - Precision:
-                - Euclidean: {tf_euclidean_precision}
-                - Cosine: {tf_cosine_precision}
-            - Recall:
-                - Euclidean: {tf_euclidean_recall}
-                - Cosine: {tf_cosine_recall}
-
-        TF-IDF
-            - Precision:
-                - Euclidean: {tfidf_euclidean_precision}
-                - Cosine: {tfidf_cosine_precision}
-            - Recall:
-                - Euclidean: {tfidf_euclidean_recall}
-                - Cosine: {tfidf_cosine_recall}
-        """.format(
-            binary_euclidean_precision=binary_euclidean_precision_sum / len(queries),
-            binary_cosine_precision=binary_cosine_precision_sum / len(queries),
-            binary_euclidean_recall=binary_euclidean_recall_sum / len(queries),
-            binary_cosine_recall=binary_cosine_recall_sum / len(queries),
-            tf_euclidean_precision=tf_euclidean_precision_sum / len(queries),
-            tf_cosine_precision=tf_cosine_precision_sum / len(queries),
-            tf_euclidean_recall=tf_euclidean_recall_sum / len(queries),
-            tf_cosine_recall=tf_cosine_recall_sum / len(queries),
-            tfidf_euclidean_precision=tfidf_euclidean_precision_sum / len(queries),
-            tfidf_cosine_precision=tfidf_cosine_precision_sum / len(queries),
-            tfidf_euclidean_recall=tfidf_euclidean_recall_sum / len(queries),
-            tfidf_cosine_recall=tfidf_cosine_recall_sum / len(queries),
-
-        )
-    )
 
 process_queries()
