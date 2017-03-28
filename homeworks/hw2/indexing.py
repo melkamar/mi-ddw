@@ -21,7 +21,7 @@ def get_data():
 def get_queries():
     """ Return list of strings, each string is a query. """
     # return ['the string is a']
-    # return [open("./data/q/" + str(q) + ".txt").read() for q in range(1, 3)]
+    # return [open("./data/q/" + str(q) + ".txt").read() for q in range(1, 10)]
     return [open("./data/q/" + str(q) + ".txt").read() for q in range(1, 226)]
 
 
@@ -199,22 +199,24 @@ def process_queries():
         print("Got:      {}".format(binary_result))
         print("Expected: {}".format(relevant_docs))
 
+        process_docs_count = 15
+
         euclidean_results.append(Query_Results(
-            binary_precision=calculate_precision(binary_result.euclidean[:len(relevant_docs)], relevant_docs),
-            binary_recall=calculate_recall(binary_result.euclidean[:len(relevant_docs)], relevant_docs),
-            tf_precision=calculate_precision(tf_result.euclidean[:len(relevant_docs)], relevant_docs),
-            tf_recall=calculate_recall(tf_result.euclidean[:len(relevant_docs)], relevant_docs),
-            tfidf_precision=calculate_precision(tfidf_result.euclidean[:len(relevant_docs)], relevant_docs),
-            tfidf_recall=calculate_recall(tfidf_result.euclidean[:len(relevant_docs)], relevant_docs)
+            binary_precision=calculate_precision(binary_result.euclidean[:process_docs_count], relevant_docs),
+            binary_recall=calculate_recall(binary_result.euclidean[:process_docs_count], relevant_docs),
+            tf_precision=calculate_precision(tf_result.euclidean[:process_docs_count], relevant_docs),
+            tf_recall=calculate_recall(tf_result.euclidean[:process_docs_count], relevant_docs),
+            tfidf_precision=calculate_precision(tfidf_result.euclidean[:process_docs_count], relevant_docs),
+            tfidf_recall=calculate_recall(tfidf_result.euclidean[:process_docs_count], relevant_docs)
         ))
 
         cosine_results.append(Query_Results(
-            binary_precision=calculate_precision(binary_result.cosine[:len(relevant_docs)], relevant_docs),
-            binary_recall=calculate_recall(binary_result.cosine[:len(relevant_docs)], relevant_docs),
-            tf_precision=calculate_precision(tf_result.cosine[:len(relevant_docs)], relevant_docs),
-            tf_recall=calculate_recall(tf_result.cosine[:len(relevant_docs)], relevant_docs),
-            tfidf_precision=calculate_precision(tfidf_result.cosine[:len(relevant_docs)], relevant_docs),
-            tfidf_recall=calculate_recall(tfidf_result.cosine[:len(relevant_docs)], relevant_docs)
+            binary_precision=calculate_precision(binary_result.cosine[:process_docs_count], relevant_docs),
+            binary_recall=calculate_recall(binary_result.cosine[:process_docs_count], relevant_docs),
+            tf_precision=calculate_precision(tf_result.cosine[:process_docs_count], relevant_docs),
+            tf_recall=calculate_recall(tf_result.cosine[:process_docs_count], relevant_docs),
+            tfidf_precision=calculate_precision(tfidf_result.cosine[:process_docs_count], relevant_docs),
+            tfidf_recall=calculate_recall(tfidf_result.cosine[:process_docs_count], relevant_docs)
         ))
 
     binary_euclidean_precision_sum = 0
