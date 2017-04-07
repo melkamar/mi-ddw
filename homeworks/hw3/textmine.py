@@ -6,7 +6,8 @@ def get_data():
     with open('1984', 'r') as f:
         text = f.read()
 
-    return text[:5000]
+    # return text[:5000]
+    return text
 
 
 def get_pos_tags(text):  # POS tagging
@@ -97,8 +98,31 @@ def get_custom_parsed_entities(tagged_list):
     return tagged_entities
 
 
+import wikipedia
+
+
+def categorize_by_wikipedia(entity: str):
+    """ Accept entity as string. """
+    page = wikipedia.page(entity)
+
+    tagged_tokens = nltk.pos_tag(nltk.word_tokenize(page.summary))
+
+    # for sentence in
+    grammar = "NP: {<DT>?<JJ>*<NN>}"
+    cp = nltk.RegexpParser(grammar)
+    chunked = cp.parse(tagged_tokens)
+
+    for entity in chunked:
+        if isinstance(entity, nltk.tree.Tree):
+            text = " ".join([word for word, tag in entity.leaves()])
+            # ent = entity.label()
+            return text
+        else:
+            continue
+
+
 def main():
-    limit_results = 20
+    limit_results = 40
 
     text = get_data()
     tagged_tokens = get_pos_tags(text)
@@ -109,7 +133,7 @@ def main():
 
     named_entities = get_named_entities(text)
     print("=" * 80)
-    print("Top entities:")
+    print("Top recognized entities:")
     # Sort by value (entity[1]), using its second field (i.e. count)
     sorted_entities = sorted(named_entities.items(), key=lambda entity: entity[1][1], reverse=True)
     pprint(sorted_entities[:limit_results])
@@ -122,6 +146,38 @@ def main():
     for custom_entity in sorted_entities[:limit_results]:
         print("({}x) {}".format(custom_entity[1][1], custom_entity))
 
+    print("=" * 80)
+    print("Tagged NLTK entities through Wikipedia:")
+    # using nltk.ne_chunk
+    count = 0
+    for named_entity in named_entities:
+        try:
+            category = categorize_by_wikipedia(named_entity)
+            print("{} ------> {}".format(named_entity, category))
+            count += 1
+            if count > limit_results:
+                break
+        except:
+            # Just throw this away, usually disambiguation
+            pass
+
+
+    # using custom pattern
+    print("=" * 80)
+    print("Tagged custom entities through Wikipedia:")
+    count = 0
+    for named_entity in custom_parsed_entities:
+        try:
+            category = categorize_by_wikipedia(named_entity)
+            print("{} ------> {}".format(named_entity, category))
+            count += 1
+            if count > limit_results:
+                break
+        except:
+            # Just throw this away, usually disambiguation
+            pass
+
 
 if __name__ == '__main__':
     main()
+    # categorize_by_wikipedia('the Ministry')
