@@ -74,18 +74,90 @@ def create_graph(records: typing.List):
     return g
 
 
+def report_general_statistics(graph: networkx.Graph):
+    nodes = graph.number_of_nodes()
+    edges = graph.number_of_edges()
+    density = edges / (nodes * (nodes - 1) / 2)
+
+    print("=" * 80)
+    print("""BASIC STATISTICS:
+Number of nodes: {nodescnt})
+Number of edges: {edgescnt}
+Density: {density}
+Number of components: {components}"""
+          .format(nodescnt=graph.number_of_nodes(),
+                  edgescnt=graph.number_of_edges(),
+                  density=density,
+                  components=networkx.number_connected_components(graph)
+                  ))
+    print("=" * 80)
+
+
+def report_centralities(graph: networkx.Graph):
+    centralities_tostr_dict = {networkx.degree_centrality: 'degree_centrality',
+                               networkx.closeness_centrality: 'closeness_centrality',
+                               networkx.betweenness_centrality: 'betweenness_centrality',
+                               networkx.eigenvector_centrality: 'eigenvector_centrality'}
+    centralities = [networkx.degree_centrality, networkx.closeness_centrality,
+                    networkx.betweenness_centrality, networkx.eigenvector_centrality]
+
+    print("=" * 80)
+    print("CENTRALITIES:")
+    for centrality in centralities:
+        centrality_res = centrality(graph)
+
+        # Add as node attribute
+        for actor, centrality_val in centrality_res.items():
+            graph[actor][centralities_tostr_dict[centrality]] = centrality_val
+
+        centrality_res_sorted = sorted(centrality_res.items(), key=lambda element: element[1], reverse=True)
+        print("{} - top 10: ".format(centrality))
+        print("  {}".format(", ".join([elm[0] for elm in centrality_res_sorted[:10]])))
+    print("=" * 80)
+
+
+def report_communities(graph: networkx.Graph):
+    communities = {}
+    for community_id, community in enumerate(networkx.k_clique_communities(graph, 3)):
+        for node in community:
+            communities[node] = community_id + 1
+
+    # Group actors from same communities together
+    community_to_actors = {}
+    for key, val in communities.items():
+        if val not in community_to_actors:
+            community_to_actors[val] = []
+        community_to_actors[val].append(key)
+
+    # Sort based on the length of the list of actors
+    community_to_actors_sorted = sorted(community_to_actors.items(), key=lambda element: len(element[1]), reversed=True)
+
+    print("=" * 80)
+    print("COMMUNITIES:")
+    for community in community_to_actors_sorted[:10]:
+        print("ID {}, {} actors: {}".format(community[0], len(community[1]), ", ".join(community[1])))
+    print("=" * 80)
+
+    # Add as attribute to graph
+    for actor, community_id in communities.items():
+        graph.node[actor]['community'] = community_id
+
+
 def main():
     data = load_data('casts.csv')
     records = []
     for row in data:
         records.append(CastRecord.parse(row))
-        print(records[-1])
-        if records[-1].actor_name == ":":
-            exit()
+        # print(records[-1])
+        # if records[-1].actor_name == ":":
+        #     exit()
 
     # graph = create_graph(records[:500])
     graph = create_graph(records)
-    networkx.write_gexf(graph, 'exported_graph.gexf')
+    # networkx.write_gexf(graph, 'exported_graph.gexf')
+
+    report_general_statistics(graph)
+    report_centralities(graph)
 
 
 if __name__ == '__main__':
