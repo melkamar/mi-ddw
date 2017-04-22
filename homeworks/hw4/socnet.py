@@ -25,6 +25,9 @@ class CastRecord:
         self.role_prefix = role_prefix
         self.role_content = role_content
 
+        if not self.actor_name:
+            self.actor_name = "<empty>"
+
     def __str__(self, *args, **kwargs):
         return "{} - {}".format(self.film_title, self.actor_name)
 
@@ -65,6 +68,9 @@ def create_graph(records: typing.List):
         film_actors[record.film_title].append(record.actor_name)
 
     for film, actor_list in film_actors.items():
+        # if len(actor_list) > 5:  # Only process films with fewer than 5 actors
+        #     continue
+
         for actor in actor_list:
             for other_actor in actor_list:
                 if actor != other_actor:
@@ -81,7 +87,7 @@ def report_general_statistics(graph: networkx.Graph):
 
     print("=" * 80)
     print("""BASIC STATISTICS:
-Number of nodes: {nodescnt})
+Number of nodes: {nodescnt}
 Number of edges: {edgescnt}
 Density: {density}
 Number of components: {components}"""
@@ -98,8 +104,12 @@ def report_centralities(graph: networkx.Graph):
                                networkx.closeness_centrality: 'closeness_centrality',
                                networkx.betweenness_centrality: 'betweenness_centrality',
                                networkx.eigenvector_centrality: 'eigenvector_centrality'}
-    centralities = [networkx.degree_centrality, networkx.closeness_centrality,
-                    networkx.betweenness_centrality, networkx.eigenvector_centrality]
+    centralities = [
+        networkx.degree_centrality,
+        # networkx.closeness_centrality,
+        # networkx.betweenness_centrality,
+        networkx.eigenvector_centrality
+    ]
 
     print("=" * 80)
     print("CENTRALITIES:")
@@ -108,11 +118,12 @@ def report_centralities(graph: networkx.Graph):
 
         # Add as node attribute
         for actor, centrality_val in centrality_res.items():
-            graph[actor][centralities_tostr_dict[centrality]] = centrality_val
+            graph.node[actor][centralities_tostr_dict[centrality]] = centrality_val
 
         centrality_res_sorted = sorted(centrality_res.items(), key=lambda element: element[1], reverse=True)
-        print("{} - top 10: ".format(centrality))
-        print("  {}".format(", ".join([elm[0] for elm in centrality_res_sorted[:10]])))
+        print("{} - top 10: ".format(centralities_tostr_dict[centrality]))
+        print("  {}".format(", ".join(["{} ({})".format(elm[0], elm[1]) for elm in centrality_res_sorted[:10]])))
+
     print("=" * 80)
 
 
@@ -130,7 +141,7 @@ def report_communities(graph: networkx.Graph):
         community_to_actors[val].append(key)
 
     # Sort based on the length of the list of actors
-    community_to_actors_sorted = sorted(community_to_actors.items(), key=lambda element: len(element[1]), reversed=True)
+    community_to_actors_sorted = sorted(community_to_actors.items(), key=lambda element: len(element[1]), reverse=True)
 
     print("=" * 80)
     print("COMMUNITIES:")
@@ -143,21 +154,49 @@ def report_communities(graph: networkx.Graph):
         graph.node[actor]['community'] = community_id
 
 
+def report_kevbacon(graph: networkx.Graph):
+    lengths = networkx.single_source_shortest_path_length(graph, 'Sally Ann Howes')
+
+    # Add as node attribute
+    for actor in graph.nodes():
+        graph.node[actor]['KevBaconLength'] = -1
+
+    length_sum = 0
+    length_count = 0
+    for actor, length in lengths.items():
+        graph.node[actor]['KevBaconLength'] = length
+        length_sum += length
+        length_count += 1
+
+    bacon_average = length_sum / length_count
+
+    lengths_sorted = sorted(lengths.items(), key=lambda element: element[1], reverse=True)
+    print("=" * 80)
+    print("KevBacon!")
+    print("Average: {}   (taken only from reachable nodes, not all nodes)".format(bacon_average))
+    print("Shortest 10: {}".format(
+        ", ".join(["{} ({})".format(actorlen[0], actorlen[1]) for actorlen in lengths_sorted[-10:]])))
+    print("Highest 10:  {}".format(
+        ", ".join(["{} ({})".format(actorlen[0], actorlen[1]) for actorlen in lengths_sorted[:10]])))
+    print("=" * 80)
+
+
 def main():
     data = load_data('casts.csv')
     records = []
     for row in data:
         records.append(CastRecord.parse(row))
-        # print(records[-1])
-        # if records[-1].actor_name == ":":
-        #     exit()
+
+    print("Records: {}".format(len(records)))
 
     # graph = create_graph(records[:500])
     graph = create_graph(records)
-    # networkx.write_gexf(graph, 'exported_graph.gexf')
 
     report_general_statistics(graph)
     report_centralities(graph)
+    report_kevbacon(graph)
+
+    networkx.write_gexf(graph, 'exported_graph.gexf')
 
 
 if __name__ == '__main__':

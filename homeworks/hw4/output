@@ -1,0 +1,24 @@
+/home/melka/mi-ddw/homeworks/hw4/venv/bin/python /home/melka/mi-ddw/homeworks/hw4/socnet.py
+Records: 46233
+================================================================================
+BASIC STATISTICS:
+Number of nodes: 16615
+Number of edges: 155660
+Density: 0.0011278009862353722
+Number of components: 637
+================================================================================
+================================================================================
+CENTRALITIES:
+degree_centrality - top 10:
+  s a (0.19922956542674852), Humphrey Bogart (0.025941976646201997), James Stewart (0.022511135187191524), John Gielgud (0.022270374383050438), Gary Cooper (0.022270374383050438), John Carradine (0.022089803779944624), Peter Lorre (0.021668472372697724), C.Aubrey Smith (0.02028409774888648), Henry Fonda (0.01950162513542795), Burt Lancaster (0.018779342723004695)
+eigenvector_centrality - top 10:
+  s a (0.32580712124810496), C.Aubrey Smith (0.08704752362020343), John Carradine (0.08558765702385523), James Stewart (0.08365285880584224), John Gielgud (0.08138340624887586), Peter Lorre (0.07886306485232561), Gary Cooper (0.07781425347562373), Basil Rathbone (0.07527129194470346), Humphrey Bogart (0.07456607075872855), Henry Fonda (0.07436049853668554)
+================================================================================
+================================================================================
+KevBacon!
+Average: 2.795445491966538   (taken only from reachable nodes, not all nodes)
+Shortest 10: Kieron Moore (1), Greta Garbo (1), Fredric March (1), Gert Frobe (1), Ralph Michael (1), Googie Withers (1), Benny Hill (1), Freddie Bartholomew (1), Maureen OSullivan (1), Sally Ann Howes (0)
+Highest 10:  Antonia SanJuan (6), Robert Castle (6), Elisa Touati (6), Maria deMederios (6), Paredes (6), Marbel Verdu (6), Mekhi Phifer (5), Martha Krivitz (5), Ana Karina (5), Arthur Housmaan (5)
+================================================================================
+
+Process finished with exit code 0
