@@ -68,7 +68,7 @@ def create_graph(records: typing.List):
         film_actors[record.film_title].append(record.actor_name)
 
     for film, actor_list in film_actors.items():
-        # if len(actor_list) > 5:  # Only process films with fewer than 5 actors
+        # if len(actor_list) > 14:  # Only process films with fewer than 5 actors
         #     continue
 
         for actor in actor_list:
@@ -151,7 +151,7 @@ def report_communities(graph: networkx.Graph):
 
     # Add as attribute to graph
     for actor, community_id in communities.items():
-        graph.node[actor]['community'] = community_id
+        graph.node[actor]['community_id'] = community_id
 
 
 def report_kevbacon(graph: networkx.Graph):
@@ -193,6 +193,7 @@ def main():
     graph = create_graph(records)
 
     report_general_statistics(graph)
+    report_communities(graph)
     report_centralities(graph)
     report_kevbacon(graph)
 
