@@ -1,0 +1,34 @@
+Records: 46233
+================================================================================
+BASIC STATISTICS:
+Number of nodes: 16615
+Number of edges: 111090
+Density: 0.0008048786557939581
+Number of components: 1871
+================================================================================
+================================================================================
+COMMUNITIES:
+ID 1, 9289 actors: Sharan Farrell, Veronica Carlson, Tim Allen, <.....>
+ID 155, 17 actors: Robert Manuel, Dimitris Papamichael, Giorgos Foundas, Sophia Vembo, Despo Diamantidou, Alexis, Roger Hanin, Alekos Alexandrakis, Tito Vadis, Gregoire Aslan, Jules Dassin, Pierre Vaneck, Jean Servais, Carl Mohner, Marie Sabouret, Robert Hossein, Melina Mercouri
+ID 635, 16 actors: Maria Doyle, Ruaidhri (Rory) Conroy, Colm Meany, David Kelly, Ciaran Fitzgerald, Michael Aherne, Bronagh Gallagher, Andrew Strong, Brendan Gleesom, Robert Arkins, Johnny Murphy, John Kavanagh, Jim Norton, Angelina Ball, Gabriel Byrne, Ellen Barkin
+ID 6, 14 actors: Victor Jansen, Ernst Lubitsch, Paul Biensfeldt, Julius Falkenstein, Pola Negri, Hermann Thimig, Reinhold Schunzel, Max Laurens, Paul Heideman, Hilde Wörner, Jenny Hasselqvist, Harry Liedtke, Lyda Salmanova, Dagny Servaes
+ID 1021, 14 actors: Evan Richards, Michael Flynn, Don Shanks, Susan Seaforth Hayes, Randall England, Brittney Lewis, Sam Shamstak, Corey Haim, Jeremy Slate, Suzanne Kent, Tracy Fraim, Fenton Terry, Brynja McGrady, James MacKrell
+ID 373, 13 actors: George Stephanopoulos, Tommy Bond, Carol Foreman, Studs Terkel, John Waters, Hunter S. Thompson, Rebecca Walker, Ralph Reed, Michael Stipe, Micah Wagner, Robert Redford, Michael Spinola, Noel Neill
+ID 503, 13 actors: Muddy Waters, Dr. John, Emmylou Harris, Neil Diamond, Bob Dylan, Van Morrison, The band, The Staples, Paul Butterfield, Ronnie Hawkins, Neil Young, Ringo Starr, Joni Mtichell
+ID 334, 12 actors: Brian Bremer, William Thorne, Conan Yuzna, Gerry Black, Neil Hunter, Eric Welch, Van Quattro, Zoe Yuzna, Mickey Rooney, Jane Higginson, Richard Gladstein, Amy L. Taylor
+ID 488, 12 actors: June Lion, Bobby Porter, David Allen Gries, Leonard Zola, Bonnie Hurd, Jonathan Hyde, Kirsten Dunst, Hans Byrd, Lawrie Bill Nundy, Bradley Pierce, Bebe Neuwirth, 1995
+ID 1195, 12 actors: So Yamamamura, Julie May, Hugh Latimer, Nosher Powell, Kyoko Kishida, Rose Alba, Derek Aylward, Vic Wise, Cathy Howard, Tsutoma Yamazaki, Gilly Grant, Edgar K. Bruce
+================================================================================
+================================================================================
+CENTRALITIES:
+degree_centrality - top 10: 
+  s a (0.1628144938004093), James Stewart (0.015589262068135308), Humphrey Bogart (0.015408691465029493), Henry Fonda (0.01444564824846515), Cary Grant (0.014325267846394606), Burt Lancaster (0.014204887444324063), John Carradine (0.013723365836041891), Gene Hackman (0.01360298543397135), Vincent Price (0.01324184422775972), Kirk Douglas (0.013001083423618635)
+eigenvector_centrality - top 10: 
+  s a (0.46201288260942264), James Stewart (0.08063719698544718), Henry Fonda (0.07202326579077728), Cary Grant (0.06800899603820104), Donald Crisp (0.06577891259086366), Gary Cooper (0.06453197494339033), Humphrey Bogart (0.06295391161973987), Bette Davis (0.06049338791812392), Nigel Bruce (0.059693459713332286), Spencer Tracy (0.058557089579044805)
+================================================================================
+================================================================================
+KevBacon!
+Average: 2.944721800159178   (taken only from reachable nodes, not all nodes)
+Shortest 10: Cedric Hardwicke (1), Cyril Fletcher (1), s a (1), Lionel Jeffries (1), Derek Bond (1), Alfred Drayton (1), Sybil Thorndyke (1), Dick VanDyke (1), Jill Balcon (1), Sally Ann Howes (0)
+Highest 10:  Robert Castle (6), Elisa Touati (6), Antonia SanJuan (6), Paredes (6), Maria deMederios (6), Marbel Verdu (6), Ben Frank (5), Jennifer Aspen (5), Diana vanderVlis (5), Leslie Gilb (5)
+================================================================================
