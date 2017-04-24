@@ -1,0 +1,306 @@
+========================================================================================================================
+CONFIDENCE:
+['type=mammal'] => venomous=False: 1.0
+['toothed=False'] => fins=False: 1.0
+['type=mammal'] => breathes=True: 1.0
+['aquatic=False'] => fins=False: 1.0
+['legs=4'] => fins=False: 1.0
+['type=mammal'] => backbone=True: 1.0
+['toothed=True'] => backbone=True: 1.0
+['milk=True'] => feathers=False: 1.0
+['hair=True'] => feathers=False: 1.0
+['legs=4'] => feathers=False: 1.0
+['milk=True'] => breathes=True: 1.0
+['hair=True'] => breathes=True: 1.0
+['type=mammal'] => feathers=False: 1.0
+['legs=4'] => airborne=False: 1.0
+['eggs=False'] => feathers=False: 1.0
+['milk=True'] => type=mammal: 1.0
+['type=mammal'] => milk=True: 1.0
+['milk=True'] => venomous=False: 1.0
+['milk=True'] => backbone=True: 1.0
+['toothed=True'] => feathers=False: 1.0
+['hair=True', 'eggs=False'] => breathes=True: 1.0
+['catsize=True', 'eggs=False'] => backbone=True: 1.0
+['aquatic=False', 'airborne=False'] => fins=False: 1.0
+['venomous=False', 'legs=4'] => airborne=False: 1.0
+['predator=True', 'toothed=True'] => airborne=False: 1.0
+['toothed=True', 'milk=True'] => venomous=False: 1.0
+['aquatic=False', 'tail=True'] => breathes=True: 1.0
+['airborne=False', 'milk=True'] => type=mammal: 1.0
+['type=mammal', 'airborne=False'] => milk=True: 1.0
+['venomous=False', 'toothed=True'] => backbone=True: 1.0
+['hair=True', 'breathes=True'] => feathers=False: 1.0
+['feathers=False', 'hair=True'] => breathes=True: 1.0
+['hair=True', 'legs=4'] => feathers=False: 1.0
+['type=mammal', 'airborne=False'] => backbone=True: 1.0
+['type=mammal', 'fins=False'] => backbone=True: 1.0
+['type=mammal', 'catsize=True'] => airborne=False: 1.0
+['toothed=True', 'breathes=True'] => backbone=True: 1.0
+['fins=False', 'milk=True'] => type=mammal: 1.0
+['fins=False', 'type=mammal'] => milk=True: 1.0
+['eggs=True', 'breathes=True'] => fins=False: 1.0
+['toothed=True', 'type=mammal'] => breathes=True: 1.0
+['venomous=False', 'eggs=False'] => backbone=True: 1.0
+['type=mammal', 'domestic=False'] => backbone=True: 1.0
+['backbone=True', 'legs=4'] => fins=False: 1.0
+['legs=4', 'type=mammal'] => breathes=True: 1.0
+['catsize=False', 'eggs=True'] => milk=False: 1.0
+['toothed=True', 'type=mammal'] => venomous=False: 1.0
+['catsize=True', 'fins=False'] => venomous=False: 1.0
+['milk=True', 'breathes=True'] => type=mammal: 1.0
+['type=mammal', 'breathes=True'] => milk=True: 1.0
+['type=mammal', 'milk=True'] => breathes=True: 1.0
+['milk=True', 'legs=4'] => type=mammal: 1.0
+['type=mammal', 'legs=4'] => milk=True: 1.0
+['eggs=False', 'domestic=False'] => feathers=False: 1.0
+['tail=True', 'milk=True'] => backbone=True: 1.0
+['aquatic=False', 'eggs=False'] => breathes=True: 1.0
+['predator=True', 'toothed=True'] => backbone=True: 1.0
+['aquatic=False', 'backbone=True'] => fins=False: 1.0
+['feathers=False', 'milk=True'] => type=mammal: 1.0
+['type=mammal', 'milk=True'] => feathers=False: 1.0
+['type=mammal', 'feathers=False'] => milk=True: 1.0
+['fins=False', 'milk=True'] => feathers=False: 1.0
+['type=mammal', 'milk=True'] => venomous=False: 1.0
+['venomous=False', 'milk=True'] => type=mammal: 1.0
+['venomous=False', 'type=mammal'] => milk=True: 1.0
+['toothed=True', 'breathes=True'] => feathers=False: 1.0
+['backbone=True', 'hair=True'] => venomous=False: 1.0
+['catsize=True', 'breathes=True'] => venomous=False: 1.0
+['predator=True', 'eggs=True'] => domestic=False: 1.0
+['toothed=False', 'hair=False'] => fins=False: 1.0
+['milk=False', 'airborne=False'] => hair=False: 1.0
+['hair=True', 'eggs=False'] => toothed=True: 1.0
+['toothed=True', 'hair=True'] => eggs=False: 1.0
+['catsize=True', 'type=mammal'] => venomous=False: 1.0
+['venomous=False', 'toothed=True'] => feathers=False: 1.0
+['catsize=False', 'toothed=False'] => fins=False: 1.0
+['milk=True', 'legs=4'] => hair=True: 1.0
+['hair=True', 'legs=4'] => milk=True: 1.0
+['milk=True', 'fins=False'] => venomous=False: 1.0
+['aquatic=False', 'type=mammal'] => backbone=True: 1.0
+['hair=True', 'eggs=False'] => milk=True: 1.0
+['hair=True', 'legs=4'] => breathes=True: 1.0
+['catsize=True', 'breathes=True'] => backbone=True: 1.0
+['aquatic=False', 'milk=True'] => hair=True: 1.0
+['aquatic=False', 'tail=True'] => fins=False: 1.0
+['tail=True', 'legs=4'] => venomous=False: 1.0
+['fins=False', 'milk=True'] => breathes=True: 1.0
+['tail=True', 'milk=True'] => venomous=False: 1.0
+['aquatic=False', 'eggs=False'] => feathers=False: 1.0
+['toothed=False', 'eggs=True'] => fins=False: 1.0
+['catsize=False', 'breathes=True'] => fins=False: 1.0
+['backbone=True', 'legs=4'] => airborne=False: 1.0
+['catsize=True', 'eggs=False'] => venomous=False: 1.0
+['catsize=True', 'aquatic=False'] => venomous=False: 1.0
+['airborne=False', 'hair=True'] => backbone=True: 1.0
+['tail=True', 'eggs=True'] => backbone=True: 1.0
+['tail=True', 'milk=True'] => breathes=True: 1.0
+['type=mammal', 'legs=4'] => feathers=False: 1.0
+['venomous=False', 'legs=4'] => fins=False: 1.0
+['hair=True', 'airborne=False'] => milk=True: 1.0
+========================================================================================================================
+LIFT:
+['milk=True'] => type=mammal: 2.4634146341463414
+['type=mammal'] => milk=True: 2.4634146341463414
+['airborne=False', 'milk=True'] => type=mammal: 2.4634146341463414
+['type=mammal', 'airborne=False'] => milk=True: 2.4634146341463414
+['fins=False', 'milk=True'] => type=mammal: 2.4634146341463414
+['fins=False', 'type=mammal'] => milk=True: 2.4634146341463414
+['milk=True', 'breathes=True'] => type=mammal: 2.4634146341463414
+['type=mammal', 'breathes=True'] => milk=True: 2.4634146341463414
+['milk=True', 'legs=4'] => type=mammal: 2.4634146341463414
+['type=mammal', 'legs=4'] => milk=True: 2.4634146341463414
+['feathers=False', 'milk=True'] => type=mammal: 2.4634146341463414
+['type=mammal', 'feathers=False'] => milk=True: 2.4634146341463414
+['venomous=False', 'milk=True'] => type=mammal: 2.4634146341463414
+['venomous=False', 'type=mammal'] => milk=True: 2.4634146341463414
+['hair=True', 'legs=4'] => milk=True: 2.4634146341463414
+['hair=True', 'eggs=False'] => milk=True: 2.4634146341463414
+['hair=True', 'airborne=False'] => milk=True: 2.4634146341463414
+['hair=True', 'eggs=False'] => type=mammal: 2.4634146341463414
+['catsize=True', 'eggs=False'] => milk=True: 2.4634146341463414
+['tail=True', 'milk=True'] => type=mammal: 2.4634146341463414
+['tail=True', 'type=mammal'] => milk=True: 2.4634146341463414
+['catsize=True', 'eggs=False'] => type=mammal: 2.4634146341463414
+['hair=True', 'legs=4'] => type=mammal: 2.4634146341463414
+['tail=True', 'hair=True'] => milk=True: 2.4634146341463414
+['backbone=True', 'milk=True'] => type=mammal: 2.4634146341463414
+['backbone=True', 'type=mammal'] => milk=True: 2.4634146341463414
+['toothed=True', 'hair=True'] => type=mammal: 2.4634146341463414
+['tail=True', 'hair=True'] => type=mammal: 2.4634146341463414
+['milk=True', 'domestic=False'] => type=mammal: 2.4634146341463414
+['type=mammal', 'domestic=False'] => milk=True: 2.4634146341463414
+['backbone=True', 'hair=True'] => type=mammal: 2.4634146341463414
+['hair=True', 'milk=True'] => type=mammal: 2.4634146341463414
+['hair=True', 'type=mammal'] => milk=True: 2.4634146341463414
+['aquatic=False', 'milk=True'] => type=mammal: 2.4634146341463414
+['aquatic=False', 'type=mammal'] => milk=True: 2.4634146341463414
+['backbone=True', 'hair=True'] => milk=True: 2.4634146341463414
+['airborne=False', 'hair=True'] => type=mammal: 2.4634146341463414
+['toothed=True', 'hair=True'] => milk=True: 2.4634146341463414
+['hair=True', 'tail=True', 'milk=True'] => type=mammal: 2.4634146341463414
+['hair=True', 'type=mammal', 'tail=True'] => milk=True: 2.4634146341463414
+['breathes=True', 'milk=True', 'domestic=False'] => type=mammal: 2.4634146341463414
+['type=mammal', 'breathes=True', 'domestic=False'] => milk=True: 2.4634146341463414
+['feathers=False', 'airborne=False', 'hair=True'] => type=mammal: 2.4634146341463414
+['toothed=True', 'airborne=False', 'hair=True'] => type=mammal: 2.4634146341463414
+['toothed=True', 'aquatic=False', 'milk=True'] => type=mammal: 2.4634146341463414
+['type=mammal', 'toothed=True', 'aquatic=False'] => milk=True: 2.4634146341463414
+['airborne=False', 'milk=True', 'legs=4'] => type=mammal: 2.4634146341463414
+['type=mammal', 'airborne=False', 'legs=4'] => milk=True: 2.4634146341463414
+['venomous=False', 'fins=False', 'eggs=False'] => type=mammal: 2.4634146341463414
+['aquatic=False', 'milk=True', 'eggs=False'] => type=mammal: 2.4634146341463414
+['type=mammal', 'aquatic=False', 'eggs=False'] => milk=True: 2.4634146341463414
+['breathes=True', 'tail=True', 'milk=True'] => type=mammal: 2.4634146341463414
+['type=mammal', 'breathes=True', 'tail=True'] => milk=True: 2.4634146341463414
+['toothed=True', 'milk=True', 'hair=True'] => type=mammal: 2.4634146341463414
+['type=mammal', 'toothed=True', 'hair=True'] => milk=True: 2.4634146341463414
+['hair=True', 'feathers=False', 'milk=True'] => type=mammal: 2.4634146341463414
+['hair=True', 'type=mammal', 'feathers=False'] => milk=True: 2.4634146341463414
+['feathers=False', 'airborne=False', 'hair=True'] => milk=True: 2.4634146341463414
+['venomous=False', 'milk=True', 'fins=False'] => type=mammal: 2.4634146341463414
+['type=mammal', 'venomous=False', 'fins=False'] => milk=True: 2.4634146341463414
+['breathes=True', 'aquatic=False', 'milk=True'] => type=mammal: 2.4634146341463414
+['type=mammal', 'breathes=True', 'aquatic=False'] => milk=True: 2.4634146341463414
+['venomous=False', 'toothed=True', 'hair=True'] => type=mammal: 2.4634146341463414
+['milk=True', 'aquatic=False', 'hair=True'] => type=mammal: 2.4634146341463414
+['type=mammal', 'aquatic=False', 'hair=True'] => milk=True: 2.4634146341463414
+['feathers=False', 'tail=True', 'milk=True'] => type=mammal: 2.4634146341463414
+['type=mammal', 'feathers=False', 'tail=True'] => milk=True: 2.4634146341463414
+['feathers=False', 'breathes=True', 'milk=True'] => type=mammal: 2.4634146341463414
+['type=mammal', 'feathers=False', 'breathes=True'] => milk=True: 2.4634146341463414
+['backbone=True', 'aquatic=False', 'hair=True'] => type=mammal: 2.4634146341463414
+['feathers=False', 'toothed=True', 'hair=True'] => milk=True: 2.4634146341463414
+['milk=True', 'fins=False', 'eggs=False'] => type=mammal: 2.4634146341463414
+['type=mammal', 'fins=False', 'eggs=False'] => milk=True: 2.4634146341463414
+['catsize=True', 'toothed=True', 'milk=True'] => type=mammal: 2.4634146341463414
+['catsize=True', 'type=mammal', 'toothed=True'] => milk=True: 2.4634146341463414
+['backbone=True', 'hair=True', 'fins=False'] => type=mammal: 2.4634146341463414
+['breathes=True', 'toothed=True', 'hair=True'] => milk=True: 2.4634146341463414
+['hair=True', 'venomous=False', 'toothed=True'] => milk=True: 2.4634146341463414
+['breathes=True', 'airborne=False', 'hair=True'] => type=mammal: 2.4634146341463414
+['feathers=False', 'aquatic=False', 'milk=True'] => type=mammal: 2.4634146341463414
+['type=mammal', 'feathers=False', 'aquatic=False'] => milk=True: 2.4634146341463414
+['hair=True', 'toothed=True', 'fins=False'] => milk=True: 2.4634146341463414
+['fins=False', 'airborne=False', 'milk=True'] => type=mammal: 2.4634146341463414
+['type=mammal', 'fins=False', 'airborne=False'] => milk=True: 2.4634146341463414
+['backbone=True', 'feathers=False', 'hair=True'] => type=mammal: 2.4634146341463414
+['breathes=True', 'airborne=False', 'hair=True'] => milk=True: 2.4634146341463414
+['catsize=True', 'toothed=True', 'eggs=False'] => type=mammal: 2.4634146341463414
+['hair=True', 'breathes=True', 'milk=True'] => type=mammal: 2.4634146341463414
+['hair=True', 'type=mammal', 'breathes=True'] => milk=True: 2.4634146341463414
+['venomous=False', 'airborne=False', 'hair=True'] => type=mammal: 2.4634146341463414
+['hair=True', 'milk=True', 'domestic=False'] => type=mammal: 2.4634146341463414
+['hair=True', 'type=mammal', 'domestic=False'] => milk=True: 2.4634146341463414
+['backbone=True', 'venomous=False', 'milk=True'] => type=mammal: 2.4634146341463414
+['backbone=True', 'type=mammal', 'venomous=False'] => milk=True: 2.4634146341463414
+['venomous=False', 'airborne=False', 'eggs=False'] => milk=True: 2.4634146341463414
+['backbone=True', 'hair=True', 'domestic=False'] => type=mammal: 2.4634146341463414
+['catsize=True', 'airborne=False', 'eggs=False'] => milk=True: 2.4634146341463414
+['hair=True', 'airborne=False', 'fins=False'] => milk=True: 2.4634146341463414
+['feathers=False', 'hair=True', 'eggs=False'] => milk=True: 2.4634146341463414
+['catsize=True', 'airborne=False', 'eggs=False'] => type=mammal: 2.4634146341463414
+========================================================================================================================
+CONVICTION:
+['toothed=True', 'eggs=False'] => milk=True: 24.356435643564335
+['backbone=True', 'eggs=False'] => milk=True: 24.356435643564335
+['eggs=False', 'breathes=True'] => milk=True: 24.356435643564335
+['eggs=False', 'breathes=True'] => type=mammal: 24.356435643564335
+['toothed=True', 'eggs=False'] => type=mammal: 24.356435643564335
+['backbone=True', 'eggs=False'] => type=mammal: 24.356435643564335
+['feathers=False', 'breathes=True', 'eggs=False'] => type=mammal: 24.356435643564335
+['feathers=False', 'breathes=True', 'eggs=False'] => milk=True: 24.356435643564335
+['feathers=False', 'toothed=True', 'eggs=False'] => type=mammal: 24.356435643564335
+['backbone=True', 'toothed=True', 'eggs=False'] => milk=True: 24.356435643564335
+['feathers=False', 'toothed=True', 'eggs=False'] => milk=True: 24.356435643564335
+['backbone=True', 'feathers=False', 'eggs=False'] => type=mammal: 24.356435643564335
+['backbone=True', 'toothed=True', 'eggs=False'] => type=mammal: 24.356435643564335
+['backbone=True', 'feathers=False', 'eggs=False'] => milk=True: 24.356435643564335
+['backbone=True', 'toothed=True', 'eggs=False', 'feathers=False'] => milk=True: 24.356435643564335
+['backbone=True', 'toothed=True', 'eggs=False', 'feathers=False'] => type=mammal: 24.356435643564335
+['milk=True'] => eggs=False: 23.950495049504934
+['type=mammal'] => eggs=False: 23.950495049504934
+['venomous=False', 'type=mammal'] => eggs=False: 23.950495049504934
+['type=mammal', 'feathers=False'] => eggs=False: 23.950495049504934
+['backbone=True', 'milk=True'] => eggs=False: 23.950495049504934
+['type=mammal', 'milk=True'] => eggs=False: 23.950495049504934
+['feathers=False', 'milk=True'] => eggs=False: 23.950495049504934
+['milk=True', 'breathes=True'] => eggs=False: 23.950495049504934
+['venomous=False', 'milk=True'] => eggs=False: 23.950495049504934
+['type=mammal', 'breathes=True'] => eggs=False: 23.950495049504934
+['backbone=True', 'type=mammal'] => eggs=False: 23.950495049504934
+['type=mammal', 'breathes=True', 'venomous=False'] => eggs=False: 23.950495049504934
+['type=mammal', 'breathes=True', 'milk=True'] => eggs=False: 23.950495049504934
+['feathers=False', 'type=mammal', 'venomous=False'] => eggs=False: 23.950495049504934
+['type=mammal', 'feathers=False', 'breathes=True'] => eggs=False: 23.950495049504934
+['feathers=False', 'breathes=True', 'milk=True'] => eggs=False: 23.950495049504934
+['type=mammal', 'feathers=False', 'milk=True'] => eggs=False: 23.950495049504934
+['backbone=True', 'type=mammal', 'breathes=True'] => eggs=False: 23.950495049504934
+['backbone=True', 'breathes=True', 'milk=True'] => eggs=False: 23.950495049504934
+['backbone=True', 'type=mammal', 'venomous=False'] => eggs=False: 23.950495049504934
+['backbone=True', 'type=mammal', 'milk=True'] => eggs=False: 23.950495049504934
+['breathes=True', 'venomous=False', 'milk=True'] => eggs=False: 23.950495049504934
+['type=mammal', 'venomous=False', 'milk=True'] => eggs=False: 23.950495049504934
+['feathers=False', 'venomous=False', 'milk=True'] => eggs=False: 23.950495049504934
+['backbone=True', 'type=mammal', 'feathers=False'] => eggs=False: 23.950495049504934
+['backbone=True', 'venomous=False', 'milk=True'] => eggs=False: 23.950495049504934
+['backbone=True', 'feathers=False', 'milk=True'] => eggs=False: 23.950495049504934
+['breathes=True', 'feathers=False', 'type=mammal', 'venomous=False'] => eggs=False: 23.950495049504934
+['backbone=True', 'breathes=True', 'feathers=False', 'milk=True'] => eggs=False: 23.950495049504934
+['backbone=True', 'feathers=False', 'type=mammal', 'venomous=False'] => eggs=False: 23.950495049504934
+['breathes=True', 'feathers=False', 'venomous=False', 'milk=True'] => eggs=False: 23.950495049504934
+['backbone=True', 'breathes=True', 'type=mammal', 'venomous=False'] => eggs=False: 23.950495049504934
+['type=mammal', 'feathers=False', 'venomous=False', 'milk=True'] => eggs=False: 23.950495049504934
+['backbone=True', 'breathes=True', 'feathers=False', 'type=mammal'] => eggs=False: 23.950495049504934
+['breathes=True', 'type=mammal', 'feathers=False', 'milk=True'] => eggs=False: 23.950495049504934
+['backbone=True', 'type=mammal', 'feathers=False', 'milk=True'] => eggs=False: 23.950495049504934
+['backbone=True', 'feathers=False', 'venomous=False', 'milk=True'] => eggs=False: 23.950495049504934
+['backbone=True', 'type=mammal', 'venomous=False', 'milk=True'] => eggs=False: 23.950495049504934
+['breathes=True', 'type=mammal', 'venomous=False', 'milk=True'] => eggs=False: 23.950495049504934
+['backbone=True', 'breathes=True', 'venomous=False', 'milk=True'] => eggs=False: 23.950495049504934
+['backbone=True', 'breathes=True', 'type=mammal', 'milk=True'] => eggs=False: 23.950495049504934
+['backbone=True', 'feathers=False', 'type=mammal', 'venomous=False', 'milk=True'] => eggs=False: 23.950495049504934
+['backbone=True', 'feathers=False', 'type=mammal', 'breathes=True', 'venomous=False'] => eggs=False: 23.950495049504934
+['backbone=True', 'feathers=False', 'type=mammal', 'breathes=True', 'milk=True'] => eggs=False: 23.950495049504934
+['feathers=False', 'type=mammal', 'breathes=True', 'venomous=False', 'milk=True'] => eggs=False: 23.950495049504934
+['backbone=True', 'feathers=False', 'breathes=True', 'venomous=False', 'milk=True'] => eggs=False: 23.950495049504934
+['backbone=True', 'type=mammal', 'breathes=True', 'venomous=False', 'milk=True'] => eggs=False: 23.950495049504934
+['backbone=True', 'feathers=False', 'type=mammal', 'breathes=True', 'venomous=False', 'milk=True'] => eggs=False: 23.950495049504934
+['eggs=True'] => milk=False: 23.95049504950486
+['toothed=True', 'airborne=False', 'eggs=False'] => milk=True: 23.16831683168315
+['backbone=True', 'airborne=False', 'eggs=False'] => type=mammal: 23.16831683168315
+['toothed=True', 'airborne=False', 'eggs=False'] => type=mammal: 23.16831683168315
+['breathes=True', 'airborne=False', 'eggs=False'] => milk=True: 23.16831683168315
+['breathes=True', 'airborne=False', 'eggs=False'] => type=mammal: 23.16831683168315
+['backbone=True', 'airborne=False', 'eggs=False'] => milk=True: 23.16831683168315
+['backbone=True', 'airborne=False', 'eggs=False', 'feathers=False'] => type=mammal: 23.16831683168315
+['breathes=True', 'airborne=False', 'eggs=False', 'feathers=False'] => type=mammal: 23.16831683168315
+['toothed=True', 'airborne=False', 'eggs=False', 'feathers=False'] => type=mammal: 23.16831683168315
+['backbone=True', 'airborne=False', 'eggs=False', 'feathers=False'] => milk=True: 23.16831683168315
+['backbone=True', 'toothed=True', 'airborne=False', 'eggs=False'] => type=mammal: 23.16831683168315
+['toothed=True', 'airborne=False', 'eggs=False', 'feathers=False'] => milk=True: 23.16831683168315
+['backbone=True', 'toothed=True', 'airborne=False', 'eggs=False'] => milk=True: 23.16831683168315
+['breathes=True', 'airborne=False', 'eggs=False', 'feathers=False'] => milk=True: 23.16831683168315
+['backbone=True', 'feathers=False', 'toothed=True', 'airborne=False', 'eggs=False'] => milk=True: 23.16831683168315
+['backbone=True', 'feathers=False', 'toothed=True', 'airborne=False', 'eggs=False'] => type=mammal: 23.16831683168315
+['hair=True', 'milk=True'] => eggs=False: 22.782178217821766
+['type=mammal', 'hair=True'] => eggs=False: 22.782178217821766
+['type=mammal', 'airborne=False'] => eggs=False: 22.782178217821766
+['airborne=False', 'milk=True'] => eggs=False: 22.782178217821766
+['backbone=True', 'hair=True'] => eggs=False: 22.782178217821766
+['venomous=False', 'airborne=False', 'milk=True'] => eggs=False: 22.782178217821766
+['feathers=False', 'milk=True', 'hair=True'] => eggs=False: 22.782178217821766
+['type=mammal', 'milk=True', 'hair=True'] => eggs=False: 22.782178217821766
+['backbone=True', 'type=mammal', 'hair=True'] => eggs=False: 22.782178217821766
+['feathers=False', 'type=mammal', 'airborne=False'] => eggs=False: 22.782178217821766
+['venomous=False', 'milk=True', 'hair=True'] => eggs=False: 22.782178217821766
+['type=mammal', 'feathers=False', 'hair=True'] => eggs=False: 22.782178217821766
+['backbone=True', 'type=mammal', 'airborne=False'] => eggs=False: 22.782178217821766
+['type=mammal', 'airborne=False', 'milk=True'] => eggs=False: 22.782178217821766
+['feathers=False', 'airborne=False', 'milk=True'] => eggs=False: 22.782178217821766
+['backbone=True', 'venomous=False', 'hair=True'] => eggs=False: 22.782178217821766
+['backbone=True', 'feathers=False', 'hair=True'] => eggs=False: 22.782178217821766
+['backbone=True', 'breathes=True', 'hair=True'] => eggs=False: 22.782178217821766
+['breathes=True', 'airborne=False', 'milk=True'] => eggs=False: 22.782178217821766

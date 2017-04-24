@@ -60,7 +60,7 @@ def generate_left_and_right_sides(itemset: frozenset):
     return res
 
 
-def generate_rules(frequent_itemsets, supports, min_confidence, sort_by_confidence=False):
+def generate_rules(frequent_itemsets, supports, min_confidence, sort_by_confidence=False, metric="confidence"):
     rules = []
 
     for itemset in frequent_itemsets:
@@ -69,14 +69,25 @@ def generate_rules(frequent_itemsets, supports, min_confidence, sort_by_confiden
 
         for entry in generate_left_and_right_sides(itemset):
             left_side, right_side = entry
-            rule_confidence = supports[itemset] / supports[frozenset(left_side)]
+            if metric == "confidence":
+                rule_confidence = supports[itemset] / supports[frozenset(left_side)]
+            elif metric == "lift":
+                rule_confidence = supports[itemset] / (supports[frozenset(left_side)] * supports[frozenset([right_side])])
+            elif metric == "conviction":
+                denominator = 1-supports[itemset] / supports[frozenset(left_side)]
+                if denominator:
+                    rule_confidence = (1-supports[frozenset([right_side])]) / (denominator)
+                else:
+                    rule_confidence = 0
+            else:
+                raise ValueError("Metric must be confidence or lift or conviction.")
             if rule_confidence >= min_confidence:
                 rules.append((left_side, right_side, rule_confidence))
 
     if sort_by_confidence:
-        rules = sorted(rules, key=lambda rule: rule[2])
+        rules = sorted(rules, key=lambda rule: rule[2], reverse=True)
 
-    for rule in rules:
+    for rule in rules[:100]:
         left_side = rule[0]
         right_side=rule[1]
         rule_confidence=rule[2]
@@ -94,10 +105,10 @@ def get_dataset_shopping():
     ]
 
 
-def get_dataset_bank():
-    df = pd.read_csv("./bank-data.csv")
-    del df["id"]
-    df["income"] = pd.cut(df["income"], 10)
+def get_dataset_uci(filename):
+    df = pd.read_csv(filename)
+    # del df["id"]
+    # df["income"] = pd.cut(df["income"], 10)
     dataset = []
     for index, row in df.iterrows():
         row = [col + "=" + str(row[col]) for col in list(df)]
@@ -108,12 +119,21 @@ def get_dataset_bank():
 
 def main():
     # dataset = get_dataset_shopping()
-    dataset = get_dataset_bank()
+    # dataset = get_dataset_uci("./bank-data.csv")
+    dataset = get_dataset_uci("./zoo.csv")
 
-    print(dataset)
+    # print(dataset)
 
     frequent_itemsets, supports = apriori(dataset, 0.3)
-    generate_rules(frequent_itemsets, supports, 0.5, sort_by_confidence=True)
+    print("="*120)
+    print("CONFIDENCE:")
+    generate_rules(frequent_itemsets, supports, 0.7, sort_by_confidence=True, metric="confidence")
+    print("="*120)
+    print("LIFT:")
+    generate_rules(frequent_itemsets, supports, 1.03, sort_by_confidence=True, metric="lift")
+    print("="*120)
+    print("CONVICTION:")
+    generate_rules(frequent_itemsets, supports, 1.1, sort_by_confidence=True, metric="conviction")
 
     # ...
     # {'car=YES'} => married=YES, 0.3233333333333333, 0.6554054054054054
