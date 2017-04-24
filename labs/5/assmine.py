@@ -2,6 +2,9 @@
 # Generating rules - only one item on the right side
 
 from collections import Counter
+from pprint import pprint
+import itertools
+
 import pandas as pd
 
 
@@ -47,11 +50,51 @@ def apriori(transactions, support):
     return result, resultc
 
 
-def generate_rules(frequent_itemsets, supports, min_confidence):
-    print(" .... ")
+def generate_left_and_right_sides(itemset: frozenset):
+    itemlist = list(itemset)
+    res = []
+    for item in itemlist:
+        newlist = list(itemlist)
+        newlist.remove(item)
+        res.append((newlist, item))
+    return res
 
 
-def main():
+def generate_rules(frequent_itemsets, supports, min_confidence, sort_by_confidence=False):
+    rules = []
+
+    for itemset in frequent_itemsets:
+        if len(itemset) < 2:
+            continue
+
+        for entry in generate_left_and_right_sides(itemset):
+            left_side, right_side = entry
+            rule_confidence = supports[itemset] / supports[frozenset(left_side)]
+            if rule_confidence >= min_confidence:
+                rules.append((left_side, right_side, rule_confidence))
+
+    if sort_by_confidence:
+        rules = sorted(rules, key=lambda rule: rule[2])
+
+    for rule in rules:
+        left_side = rule[0]
+        right_side=rule[1]
+        rule_confidence=rule[2]
+        print(f"{left_side} => {right_side}: {rule_confidence}")
+
+# pprint(supports)
+
+def get_dataset_shopping():
+    return [
+        ['bread', 'milk'],
+        ['bread', 'diaper', 'beer', 'egg'],
+        ['milk', 'diaper', 'beer', 'cola'],
+        ['bread', 'milk', 'diaper', 'beer'],
+        ['bread', 'milk', 'diaper', 'cola'],
+    ]
+
+
+def get_dataset_bank():
     df = pd.read_csv("./bank-data.csv")
     del df["id"]
     df["income"] = pd.cut(df["income"], 10)
@@ -59,8 +102,18 @@ def main():
     for index, row in df.iterrows():
         row = [col + "=" + str(row[col]) for col in list(df)]
         dataset.append(row)
+
+    return dataset
+
+
+def main():
+    # dataset = get_dataset_shopping()
+    dataset = get_dataset_bank()
+
+    print(dataset)
+
     frequent_itemsets, supports = apriori(dataset, 0.3)
-    generate_rules(frequent_itemsets, supports, 0.5)
+    generate_rules(frequent_itemsets, supports, 0.5, sort_by_confidence=True)
 
     # ...
     # {'car=YES'} => married=YES, 0.3233333333333333, 0.6554054054054054
