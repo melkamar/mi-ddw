@@ -1,0 +1,28 @@
+/home/melka/mi-ddw/homeworks/hw4/venv/bin/python /home/melka/mi-ddw/homeworks/hw4/socnet.py
+Records: 46233
+================================================================================
+BASIC STATISTICS:
+Number of nodes: 9385
+Number of edges: 65341
+Density: 0.0014838619425440371
+Number of components: 372
+================================================================================
+================================================================================
+CENTRALITIES:
+degree_centrality - top 10:
+  s a (0.15238704177323104), James Stewart (0.0239769820971867), Humphrey Bogart (0.02312446717817562), Peter Lorre (0.022911338448422847), Cary Grant (0.02216538789428815), Alfred Hitchcock (0.02014066496163683), John Carradine (0.019501278772378516), Henry Fonda (0.019288150042625747), Gary Cooper (0.019075021312872975), Robert Mitchum (0.01875532821824382)
+closeness_centrality - top 10:
+  s a (0.43482260188498933), James Stewart (0.3445024221187019), Claude Rains (0.34279214866220076), Peter Lorre (0.3426360928720423), Henry Fonda (0.3419822071986223), John Wayne (0.3419045298699532), Cary Grant (0.3412843792693638), John Carradine (0.33991258314638606), Roddy McDowall (0.3394067380395617), Burt Lancaster (0.337776878916941)
+betweenness_centrality - top 10:
+  s a (0.3446814666905647), Humphrey Bogart (0.011756350428139724), Alfred Hitchcock (0.011352687705893922), Claude Rains (0.010400370599923547), Peter Lorre (0.009652642956796211), John Wayne (0.008951790963580997), James Stewart (0.008854226354082662), John Carradine (0.00837745944185281), Robert Mitchum (0.008074214260071608), Max vonSydow (0.007929950056195656)
+eigenvector_centrality - top 10:
+  s a (0.3493585831618445), James Stewart (0.10640751631831712), Peter Lorre (0.0988093861845859), Cary Grant (0.09864370213825842), Alan Hale (0.09307078664527554), Henry Fonda (0.09213966345564509), Gary Cooper (0.08564848921087875), John Carradine (0.08394904321772097), C.Aubrey Smith (0.08142105097172427), John Wayne (0.07944158093797625)
+================================================================================
+================================================================================
+KevBacon! From person: Humphrey Bogart
+Average: 2.665318262938727   (taken only from reachable nodes, not all nodes)
+Shortest 10: Elisha Cook Jr. (1), Cora Witherspoon (1), Sheldon Leonard (1), Charles Waldron (1), Sidney Greenstreet (1), Ivor Barnard (1), Tim Holt (1), Porter Hall (1), Jennifer Jones (1), Humphrey Bogart (0)
+Highest 10:  Nigel Hawthorne (5), Michael DeLuise (5), Harry H. Corbett (5), Frank Sully (5), Ferry Sikla (5), Virginie Thevenet (5), Gemma Jones (5), Guy Edwards (5), Ake Groenberg (5), Ciaran Hinds (5)
+================================================================================
+
+Process finished with exit code 0
