@@ -154,8 +154,8 @@ def report_communities(graph: networkx.Graph):
         graph.node[actor]['community_id'] = community_id
 
 
-def report_kevbacon(graph: networkx.Graph):
-    lengths = networkx.single_source_shortest_path_length(graph, 'Sally Ann Howes')
+def report_kevbacon(graph: networkx.Graph, from_person='Humphrey Bogart'):
+    lengths = networkx.single_source_shortest_path_length(graph, from_person)
 
     # Add as node attribute
     for actor in graph.nodes():
@@ -172,7 +172,7 @@ def report_kevbacon(graph: networkx.Graph):
 
     lengths_sorted = sorted(lengths.items(), key=lambda element: element[1], reverse=True)
     print("=" * 80)
-    print("KevBacon!")
+    print("KevBacon! From person: {}".format(from_person))
     print("Average: {}   (taken only from reachable nodes, not all nodes)".format(bacon_average))
     print("Shortest 10: {}".format(
         ", ".join(["{} ({})".format(actorlen[0], actorlen[1]) for actorlen in lengths_sorted[-10:]])))
@@ -193,11 +193,12 @@ def main():
     graph = create_graph(records)
 
     report_general_statistics(graph)
-    report_communities(graph)
+    # report_communities(graph)
     report_centralities(graph)
     report_kevbacon(graph)
 
-    networkx.write_gexf(graph, 'exported_graph.gexf')
+    networkx.write_gexf(graph, 'output_exported_graph.gexf')
+    # networkx.write_gexf(graph, 'output_lt14_actors_exported_graph.gexf')
 
 
 if __name__ == '__main__':

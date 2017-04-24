@@ -12,13 +12,13 @@ CENTRALITIES:
 degree_centrality - top 10:
   s a (0.19922956542674852), Humphrey Bogart (0.025941976646201997), James Stewart (0.022511135187191524), Gary Cooper (0.022270374383050438), John Gielgud (0.022270374383050438), John Carradine (0.022089803779944624), Peter Lorre (0.021668472372697724), C.Aubrey Smith (0.02028409774888648), Henry Fonda (0.01950162513542795), Burt Lancaster (0.018779342723004695)
 eigenvector_centrality - top 10:
-  s a (0.32580712124810257), C.Aubrey Smith (0.08704752362020282), John Carradine (0.08558765702385471), James Stewart (0.08365285880584167), John Gielgud (0.08138340624887519), Peter Lorre (0.0788630648523251), Gary Cooper (0.07781425347562324), Basil Rathbone (0.07527129194470292), Humphrey Bogart (0.074566070758728), Henry Fonda (0.07436049853668501)
+  s a (0.3258071212481046), C.Aubrey Smith (0.08704752362020322), John Carradine (0.0855876570238551), James Stewart (0.08365285880584208), John Gielgud (0.08138340624887558), Peter Lorre (0.07886306485232543), Gary Cooper (0.07781425347562346), Basil Rathbone (0.0752712919447033), Humphrey Bogart (0.07456607075872844), Henry Fonda (0.07436049853668544)
 ================================================================================
 ================================================================================
-KevBacon!
-Average: 2.795445491966538   (taken only from reachable nodes, not all nodes)
-Shortest 10: Kieron Moore (1), Basil Radford (1), Jill Balcon (1), Greta Garbo (1), Roland Culver (1), Cedric Hardwicke (1), Mary Merrall (1), Mervyn Jones (1), Elizabeth Welch (1), Sally Ann Howes (0)
-Highest 10:  Marbel Verdu (6), Maria deMederios (6), Paredes (6), Elisa Touati (6), Robert Castle (6), Antonia SanJuan (6), Doris Schade (5), Saro Urzi (5), Nathalie Pascoud (5), Myron Healy (5)
+KevBacon! From person: Humphrey Bogart
+Average: 2.494356659142212   (taken only from reachable nodes, not all nodes)
+Shortest 10: Bruno Kirby (1), Zero Mostel (1), Slim Summerville (1), Richard Whorf (1), Harry Hayden (1), James Stewart (1), Hoagy Carmichael (1), Joel McCrea (1), Tyne Daly (1), Humphrey Bogart (0)
+Highest 10:  Paredes (6), Elisa Touati (6), Antonia SanJuan (6), Maria deMederios (6), Marbel Verdu (6), Valentine Camax (5), Matthew Settle (5), Nathalie Pascoud (5), Jordi Molla (5), Paul Mantee (5)
 ================================================================================
 
 Process finished with exit code 0
