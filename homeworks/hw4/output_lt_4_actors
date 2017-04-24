@@ -1,0 +1,24 @@
+/home/melka/mi-ddw/homeworks/hw4/venv/bin/python /home/melka/mi-ddw/homeworks/hw4/socnet.py
+Records: 46233
+================================================================================
+BASIC STATISTICS:
+Number of nodes: 3490
+Number of edges: 4126
+Density: 0.0006776927240011794
+Number of components: 608
+================================================================================
+================================================================================
+CENTRALITIES:
+degree_centrality - top 10:
+  s a (0.06706792777300086), Charles Bronson (0.004585841215247922), Phyllis Thaxter (0.004299226139294927), Burt Lancaster (0.004012611063341932), Harvey Keitel (0.004012611063341932), Clint Eastwood (0.004012611063341932), Marcello Mastroianni (0.003725995987388937), Tommy Lee Jones (0.003725995987388937), Joan Crawford (0.003725995987388937), Anne Bancroft (0.003725995987388937)
+closeness_centrality - top 10:
+  s a (0.13959137790607593), Robert Redford (0.11916292210007987), Nick Nolte (0.11747321759781518), Martin Sheen (0.11455240691036474), Marcello Mastroianni (0.11445077613110333), Joan Crawford (0.11387347082905488), Robert Webber (0.11345855304364937), Alain Delon (0.11324512461429713), James Woods (0.11307495913779178), Gig Young (0.1129759318997129)
+================================================================================
+================================================================================
+KevBacon! From person: Humphrey Bogart
+Average: 0.6666666666666666   (taken only from reachable nodes, not all nodes)
+Shortest 10: Gale Page (1), The Dead End Kids (1), Humphrey Bogart (0)
+Highest 10:  Gale Page (1), The Dead End Kids (1), Humphrey Bogart (0)
+================================================================================
+
+Process finished with exit code 0
