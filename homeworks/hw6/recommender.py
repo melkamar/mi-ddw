@@ -1,5 +1,7 @@
 import csv
 
+SKIP_GENRES = ['(no genres listed)']
+
 
 class User:
     def __init__(self, user_id, ratings):
@@ -29,7 +31,7 @@ def read_movies(fn):
     genres_set = set()
     movies = {}
 
-    with open(fn) as f:
+    with open(fn, encoding="utf-8") as f:
         f.readline()
         f.readline()
         reader = csv.reader(f, delimiter=',')
@@ -37,7 +39,7 @@ def read_movies(fn):
             print("Row: {}".format(movie_row))
             movie_id = movie_row[0]
             title = movie_row[1]
-            genres = [genre.strip() for genre in movie_row[2].split('|')]
+            genres = [genre.strip() for genre in movie_row[2].split('|') if genre.strip() not in SKIP_GENRES]
             movie = Movie(movie_id, title, genres)
             movies[movie_id] = movie
             genres_set = genres_set.union(set(genres))
@@ -49,6 +51,7 @@ def main():
     movies, genres = read_movies('data/movies.csv')
 
     print("Genres: {}".format(genres))
+
 
 if __name__ == '__main__':
     main()
