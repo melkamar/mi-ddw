@@ -78,7 +78,47 @@ class Recommender:
     def print_user_ratings(self, user_id):
         self.users[user_id].print_genre_ratings(self.genre_id_to_str)
 
-    def recommend_content_based(self, user_id: int, top_n_results: int) -> List[Tuple[int, float]]:
+    def print_recommended_movies(self, recommended_movies):
+        """ Pretty-print list of recommendations. """
+        width_order = 2
+        width_title = 50
+        width_movid = 8
+        width_score = 4
+        precs_score = 4
+        movtitle = "Movie title"
+        movid = "Movie ID"
+        movscore = "Score"
+
+        print('-' * 80)
+        print(f"    {movtitle:{width_title}} | {movid:{width_movid}} | {movscore:{width_score+precs_score+1}}")
+        print('-' * 80)
+        for i, (movie_id, score) in enumerate(recommended_movies):
+            print(f"{i+1:{width_order}}. {self.movies[movie_id].title:{width_title}.{width_title}} | "
+                  f"{movie_id:{width_movid}} | {score:{width_score}.{precs_score}}")
+        print('-' * 80)
+
+    def recommend_hybrid_based(self, user_id, limit_results: int, content_based_weight: float = 0.3,
+                               collab_based_weight: float = 0.7, collab_use_top_n_similar_users: int = 20):
+        content_recommendations = self.recommend_content_based(user_id)
+        collab_recommendations = self.recommend_collaborative_based(
+            user_id,
+            use_top_n_similar_users=collab_use_top_n_similar_users)
+
+        final_recommendations: Dict[int, float] = {mov_id: (score * content_based_weight) for mov_id, score
+                                                   in content_recommendations}
+
+        for mov_id, score in collab_recommendations:
+            if mov_id not in final_recommendations:
+                final_recommendations[mov_id] = 0
+            final_recommendations[mov_id] += score
+
+        sorted_final = sorted(final_recommendations.items(), key=lambda item: item[1], reverse=True)
+        if limit_results > 0:
+            return sorted_final[:limit_results]
+        else:
+            return sorted_final
+
+    def recommend_content_based(self, user_id: int, limit_results: int = -1) -> List[Tuple[int, float]]:
         """
         Recommend top N results with Content-based recommending approach.
 
@@ -86,7 +126,7 @@ class Recommender:
         of rated genres).
         E.g. if user
         :param user_id: ID of the user
-        :param top_n_results: Number of top results to return.
+        :param limit_results: Number of top results to return.
         :return: List of (movie_id, similarity) tuples sorted in descending order based on similarity.
         """
         similarities: Dict[int, float] = {}
@@ -100,9 +140,13 @@ class Recommender:
         sorted_similarities: List[Tuple[int, float]] = sorted(similarities.items(),
                                                               key=lambda item: item[1],
                                                               reverse=True)
-        return sorted_similarities[:top_n_results]
+        if limit_results > 0:
+            return sorted_similarities[:limit_results]
+        else:
+            return sorted_similarities
 
-    def recommend_collaborative_based(self, user_id: int, top_n_similar_users: int) -> List[Tuple[int, float]]:
+    def recommend_collaborative_based(self, user_id: int, limit_results: int = -1, use_top_n_similar_users: int = 5) -> \
+            List[Tuple[int, float]]:
         """
         Recommend top N results with Collaborative filtering approach.
 
@@ -111,7 +155,8 @@ class Recommender:
         - Build a new movie rating vector as a weighted mean of all the ratings the other users made.
         - Sort the ratings descendingly, recommend the movies with the highest ranking that the user has not seen yet
         :param user_id:
-        :param top_n_similar_users:
+        :param limit_results
+        :param use_top_n_similar_users:
         :return:
         """
         this_user = self.users[user_id]
@@ -128,7 +173,7 @@ class Recommender:
         # Sort obtained similarities, best first
         sorted_similar_users: List[Tuple[int, float]] = sorted(similarities.items(),
                                                                key=lambda item: item[1],
-                                                               reverse=True)[:top_n_similar_users]
+                                                               reverse=True)[:use_top_n_similar_users]
 
         print("*" * 80)
         print("Using similar users:")
@@ -159,7 +204,10 @@ class Recommender:
         max_val = sorted_new_ratings[0][1]
         normalized_sorted_new_ratings = [(rating[0], (rating[1] / max_val)) for rating in sorted_new_ratings]
 
-        return normalized_sorted_new_ratings
+        if limit_results > 0:
+            return normalized_sorted_new_ratings[:limit_results]
+        else:
+            return normalized_sorted_new_ratings
 
     def _read_movies(self) -> Tuple[Dict[int, Movie], List[str]]:
         """
@@ -218,18 +266,18 @@ class Recommender:
 
 def main():
     recommender = Recommender('data/movies.csv', 'data/ratings.csv')
+
     user_id = 1
+    recommendation_count = 0
 
-    # recommended_movies = recommender.recommend_content_based(user_id, 5)
-    # pprint(recommended_movies)
+    # content_recommended_movies = recommender.recommend_content_based(user_id, limit_results=recommendation_count)
+    # pprint(content_recommended_movies)
 
-    recommended_movies = recommender.recommend_collaborative_based(user_id, 2)
-    pprint(recommended_movies)
-    # pprint(recommended_movies[:20])
+    # collab_recommended_movies = recommender.recommend_collaborative_based(user_id, limit_results=recommendation_count)
+    # pprint(collab_recommended_movies)
 
-    recommender.print_user_ratings(user_id)
-    # for id, _ in similar_users[:3]:
-    #     recommender.print_user_ratings(id)
+    hybrid_recommended = recommender.recommend_hybrid_based(1, 10)
+    recommender.print_recommended_movies(hybrid_recommended)
 
 
 if __name__ == '__main__':
