@@ -73,7 +73,7 @@ class Recommender:
         for movie in self.movies.values():
             movie.populate_genres_vector(self.genre_str_to_id)
 
-        self.users: List[User] = self._read_users()
+        self.users: Dict[int, User] = self._read_users()
 
     def print_user_ratings(self, user_id):
         self.users[user_id].print_genre_ratings(self.genre_id_to_str)
@@ -117,7 +117,7 @@ class Recommender:
         this_user = self.users[user_id]
 
         similarities: Dict[int, float] = {}
-        for user in self.users.values():  # TODO maybe not values here?
+        for user in self.users.values():
             if user_id == user.id:
                 continue  # skip this user
 
@@ -130,10 +130,10 @@ class Recommender:
                                                                key=lambda item: item[1],
                                                                reverse=True)[:top_n_similar_users]
 
-        print("*"*80)
+        print("*" * 80)
         print("Using similar users:")
         pprint(sorted_similar_users)
-        print("*"*80)
+        print("*" * 80)
         # Build a new movie rating from similar users
         # ranking = (A_ranking * A_weight + B_ranking*B_weight +... ) / len(users)
         temp_ratings: Dict[int, List[float, int]] = {}  # Dict of {movie_id: (sum_ratings, count_people)}
@@ -183,7 +183,7 @@ class Recommender:
 
         return movies, sorted(list(genres_set))
 
-    def _read_users(self):
+    def _read_users(self) -> Dict[int, User]:
         users: Dict[int, User] = {}
 
         with open(self.ratings_csv_fn, encoding="utf-8") as f:
