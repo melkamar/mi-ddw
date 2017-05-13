@@ -117,7 +117,7 @@ class Recommender:
         this_user = self.users[user_id]
 
         similarities: Dict[int, float] = {}
-        for user in self.users.values():
+        for user in self.users.values():  # TODO maybe not values here?
             if user_id == user.id:
                 continue  # skip this user
 
@@ -130,7 +130,31 @@ class Recommender:
                                                                key=lambda item: item[1],
                                                                reverse=True)[:top_n_similar_users]
 
+        print("*"*80)
+        print("Using similar users:")
+        pprint(sorted_similar_users)
+        print("*"*80)
         # Build a new movie rating from similar users
+        # ranking = (A_ranking * A_weight + B_ranking*B_weight +... ) / len(users)
+        temp_ratings: Dict[int, List[float, int]] = {}  # Dict of {movie_id: (sum_ratings, count_people)}
+        for user, user_similarity in [(self.users[user_id], _user_similarity)
+                                      for user_id, _user_similarity in
+                                      sorted_similar_users]:  # Iterate through User objects and their similarities
+            for movie_id, movie_rating in user.ratings.items():  # Iterate through the Users' ratings
+                if movie_id in this_user.movies_rated:  # Skip movies that the user has already rated
+                    continue
+
+                if movie_id not in temp_ratings:
+                    temp_ratings[movie_id] = [0, 0]
+
+                temp_ratings[movie_id][0] += movie_rating * user_similarity  # Add weighed sum to the total movie rating
+                temp_ratings[movie_id][1] += 1
+
+        # Calculate weighed average from the dictionary constructed above, just divide the values
+        new_ratings: Dict[int, float] = {movie_id: temp_rating[0] / temp_rating[1]
+                                         for movie_id, temp_rating in temp_ratings.items()}
+        sorted_new_ratings = sorted(new_ratings.items(), key=lambda rating: rating[1], reverse=True)
+        return sorted_new_ratings
 
     def _read_movies(self) -> Tuple[Dict[int, Movie], List[str]]:
         """
@@ -194,8 +218,8 @@ def main():
     # recommended_movies = recommender.recommend_content_based(user_id, 5)
     # pprint(recommended_movies)
 
-    similar_users = recommender.recommend_collaborative_based(user_id, 59999999)
-    pprint(similar_users)
+    recommended_movies = recommender.recommend_collaborative_based(user_id, 2)
+    pprint(recommended_movies[:20])
 
     recommender.print_user_ratings(user_id)
     # for id, _ in similar_users[:3]:
