@@ -153,8 +153,13 @@ class Recommender:
         # Calculate weighed average from the dictionary constructed above, just divide the values
         new_ratings: Dict[int, float] = {movie_id: temp_rating[0] / temp_rating[1]
                                          for movie_id, temp_rating in temp_ratings.items()}
-        sorted_new_ratings = sorted(new_ratings.items(), key=lambda rating: rating[1], reverse=True)
-        return sorted_new_ratings
+        sorted_new_ratings: Dict[int, float] = sorted(new_ratings.items(), key=lambda rating: rating[1], reverse=True)
+
+        # Normalize ratings to be in interval (0,1)
+        max_val = sorted_new_ratings[0][1]
+        normalized_sorted_new_ratings = [(rating[0], (rating[1] / max_val)) for rating in sorted_new_ratings]
+
+        return normalized_sorted_new_ratings
 
     def _read_movies(self) -> Tuple[Dict[int, Movie], List[str]]:
         """
@@ -219,7 +224,8 @@ def main():
     # pprint(recommended_movies)
 
     recommended_movies = recommender.recommend_collaborative_based(user_id, 2)
-    pprint(recommended_movies[:20])
+    pprint(recommended_movies)
+    # pprint(recommended_movies[:20])
 
     recommender.print_user_ratings(user_id)
     # for id, _ in similar_users[:3]:
