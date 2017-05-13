@@ -76,8 +76,8 @@ class User:
         self.id = user_id
         self.ratings = numpy.zeros(genres_count, dtype=int)
 
-    # def __repr__(self, *args, **kwargs):
-    #     return "User[{}]: {}".format(self.id, self.ratings)
+    def __repr__(self, *args, **kwargs):
+        return "User[{}]: {}".format(self.id, self.ratings)
 
     def print_genre_ratings(self, genre_id_to_str):
         print("User {} ratings:".format(self.id))
