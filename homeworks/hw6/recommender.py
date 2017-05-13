@@ -15,17 +15,27 @@ class User:
     def __init__(self, user_id, genres_count):
         super().__init__()
         self.id = user_id
-        self.ratings = numpy.zeros(genres_count, dtype=int)
+        self.ratings = numpy.zeros(genres_count, dtype=int)  # Ratings of genres by the user, normalized to (0,1)
         self.movies_rated = set()
 
     def __repr__(self, *args, **kwargs):
         return "User[{}]: {}".format(self.id, self.ratings)
 
-    def print_genre_ratings(self, genre_id_to_str):
+    def print_genre_ratings(self, genre_id_to_str, sort_by_name=False):
         print("User {} ratings:".format(self.id))
-        for i in range(0, self.ratings.size):
-            if self.ratings[i] > 0:
-                print("  {}: {}".format(genre_id_to_str[i], self.ratings[i]))
+
+        if not sort_by_name:
+            genre_ratings: List[Tuple[str, float]] = [(genre_id_to_str[i], self.ratings[i]) for i in
+                                                      range(0, self.ratings.size)]
+
+            genre_ratings = sorted(genre_ratings, key=lambda rating: rating[1], reverse=True)
+            for genre_rating in genre_ratings:
+                if genre_rating[1] > 0:
+                    print("  {}: {}".format(genre_rating[0], genre_rating[1]))
+        else:
+            for i in range(0, self.ratings.size):
+                if self.ratings[i] > 0:
+                    print("  {}: {}".format(genre_id_to_str[i], self.ratings[i]))
 
 
 class Movie:
@@ -69,8 +79,10 @@ class Recommender:
 
     def recommend_content_based(self, user_id: int, top_n_results: int) -> List[Tuple[int, float]]:
         """
+        Recommend top N results with Content-based recommending approach.
+
         Calculate cosine similarity of the given User's ratings to all movies in the Recommender (similarity
-        of rated genres). Returns the top N genre-similar movies.
+        of rated genres).
         E.g. if user
         :param user_id: ID of the user
         :param top_n_results: Number of top results to return.
@@ -88,6 +100,36 @@ class Recommender:
                                                               key=lambda item: item[1],
                                                               reverse=True)
         return sorted_similarities[:top_n_results]
+
+    def recommend_collaborative_based(self, user_id: int, top_n_similar_users: int) -> List[Tuple[int, float]]:
+        """
+        Recommend top N results with Collaborative filtering approach.
+
+        - Calculate cosine similarity of the given user's rating vector to all other users.
+        - Select the best N matches
+        - Build a new movie rating vector as a weighted mean of all the ratings the other users made.
+        - Sort the ratings descendingly, recommend the movies with the highest ranking that the user has not seen yet
+        :param user_id:
+        :param top_n_similar_users:
+        :return:
+        """
+        this_user = self.users[user_id]
+
+        similarities: Dict[int, float] = {}
+        for user in self.users.values():
+            if user_id == user.id:
+                continue  # skip this user
+
+            similarity = cosine_similarity(this_user.ratings.reshape(1, -1), user.ratings.reshape(1, -1))[0][0]
+            similarities[user.id] = similarity
+
+        # Sort obtained similarities, best first
+        sorted_similar_users: List[Tuple[int, float]] = sorted(similarities.items(),
+                                                               key=lambda item: item[1],
+                                                               reverse=True)[:top_n_similar_users]
+
+        # Build a new movie rating from similar users
+
 
     def _read_movies(self) -> Tuple[Dict[int, Movie], List[str]]:
         """
@@ -147,9 +189,15 @@ def main():
     recommender = Recommender('data/movies.csv', 'data/ratings.csv')
     user_id = 1
 
+    # recommended_movies = recommender.recommend_content_based(user_id, 5)
+    # pprint(recommended_movies)
+
+    similar_users = recommender.recommend_collaborative_based(user_id, 59999999)
+    pprint(similar_users)
+
     recommender.print_user_ratings(user_id)
-    recommended_movies = recommender.recommend_content_based(user_id, 5)
-    pprint(recommended_movies)
+    for id, _ in similar_users[:3]:
+        recommender.print_user_ratings(id)
 
 
 if __name__ == '__main__':
