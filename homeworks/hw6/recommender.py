@@ -23,7 +23,7 @@ class User:
         return "User[{}]: {}".format(self.id, self.genre_ratings)
 
     def print_genre_ratings(self, genre_id_to_str, sort_by_name=False):
-        print("User {} ratings:".format(self.id))
+        print(f"User {self.id} genre ratings:")
 
         if not sort_by_name:
             genre_ratings: List[Tuple[str, float]] = [(genre_id_to_str[i], self.genre_ratings[i]) for i in
@@ -285,10 +285,24 @@ def main():
     user_id = 1
     recommendation_count = 10
 
-    recommender.print_movies_ratings()
+    weight_content_based = 0.3
+    weight_collabr_based = 0.7
+    top_similar_users_count = 20
+
+    # recommender.print_movies_ratings()
     recommender.print_user_genre_ratings(user_id)
 
-    hybrid_recommended = recommender.recommend_hybrid_based(user_id, recommendation_count)
+    hybrid_recommended = recommender.recommend_hybrid_based(user_id,
+                                                            recommendation_count,
+                                                            content_based_weight=weight_content_based,
+                                                            collab_based_weight=weight_collabr_based,
+                                                            collab_use_top_n_similar_users=top_similar_users_count)
+
+    print(f"""Recommended movies for User {user_id} with parameters:
+    Content-based recommendation weight:     {weight_content_based}
+    Collaboration-filtering weight:          {weight_collabr_based}
+    Number of most similar users considered: {top_similar_users_count}
+    """)
     recommender.print_recommended_movies(hybrid_recommended)
 
 
