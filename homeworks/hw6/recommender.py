@@ -15,27 +15,27 @@ class User:
     def __init__(self, user_id, genres_count):
         super().__init__()
         self.id = user_id
-        self.ratings = numpy.zeros(genres_count, dtype=int)  # Ratings of genres by the user, normalized to (0,1)
+        self.genre_ratings = numpy.zeros(genres_count, dtype=int)  # Ratings of genres by the user, normalized to (0,1)
         self.movies_rated = set()
 
     def __repr__(self, *args, **kwargs):
-        return "User[{}]: {}".format(self.id, self.ratings)
+        return "User[{}]: {}".format(self.id, self.genre_ratings)
 
     def print_genre_ratings(self, genre_id_to_str, sort_by_name=False):
         print("User {} ratings:".format(self.id))
 
         if not sort_by_name:
-            genre_ratings: List[Tuple[str, float]] = [(genre_id_to_str[i], self.ratings[i]) for i in
-                                                      range(0, self.ratings.size)]
+            genre_ratings: List[Tuple[str, float]] = [(genre_id_to_str[i], self.genre_ratings[i]) for i in
+                                                      range(0, self.genre_ratings.size)]
 
             genre_ratings = sorted(genre_ratings, key=lambda rating: rating[1], reverse=True)
             for genre_rating in genre_ratings:
                 if genre_rating[1] > 0:
                     print("  {}: {}".format(genre_rating[0], genre_rating[1]))
         else:
-            for i in range(0, self.ratings.size):
-                if self.ratings[i] > 0:
-                    print("  {}: {}".format(genre_id_to_str[i], self.ratings[i]))
+            for i in range(0, self.genre_ratings.size):
+                if self.genre_ratings[i] > 0:
+                    print("  {}: {}".format(genre_id_to_str[i], self.genre_ratings[i]))
 
 
 class Movie:
@@ -92,7 +92,7 @@ class Recommender:
 
         non_rated_movies = [movie for movie in self.movies.values() if movie.id not in self.users[user_id].movies_rated]
         for movie in non_rated_movies:
-            similarity = cosine_similarity(self.users[user_id].ratings.reshape(1, -1), movie.genres_vector)[0][0]
+            similarity = cosine_similarity(self.users[user_id].genre_ratings.reshape(1, -1), movie.genres_vector)[0][0]
             similarities[movie.id] = similarity
 
         # Sort obtained similarities, best first
@@ -120,7 +120,7 @@ class Recommender:
             if user_id == user.id:
                 continue  # skip this user
 
-            similarity = cosine_similarity(this_user.ratings.reshape(1, -1), user.ratings.reshape(1, -1))[0][0]
+            similarity = cosine_similarity(this_user.genre_ratings.reshape(1, -1), user.genre_ratings.reshape(1, -1))[0][0]
             similarities[user.id] = similarity
 
         # Sort obtained similarities, best first
@@ -175,12 +175,12 @@ class Recommender:
                 users[user_id].movies_rated.add(movie_id)
                 for movie_genre in self.movies[movie_id].genres:
                     if rating >= RATING_THRESHOLD:
-                        users[user_id].ratings[self.genre_str_to_id[movie_genre]] += 1
+                        users[user_id].genre_ratings[self.genre_str_to_id[movie_genre]] += 1
 
         # TODO Not sure about this - normalizing user rating vector to have scores in (0,1).
         # Reason - Vector (3,1,0) would be closer to (0,1,0) than (3,0,0), but user clearly more prefers the first genre
         for user in users.values():
-            user.ratings = user.ratings / numpy.amax(user.ratings)
+            user.genre_ratings = user.genre_ratings / numpy.amax(user.genre_ratings)
 
         return users
 
@@ -196,8 +196,8 @@ def main():
     pprint(similar_users)
 
     recommender.print_user_ratings(user_id)
-    for id, _ in similar_users[:3]:
-        recommender.print_user_ratings(id)
+    # for id, _ in similar_users[:3]:
+    #     recommender.print_user_ratings(id)
 
 
 if __name__ == '__main__':
