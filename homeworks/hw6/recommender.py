@@ -16,6 +16,7 @@ class User:
         super().__init__()
         self.id = user_id
         self.genre_ratings = numpy.zeros(genres_count, dtype=int)  # Ratings of genres by the user, normalized to (0,1)
+        self.ratings: Dict[int, float] = {}  # Star-rating of given movies
         self.movies_rated = set()
 
     def __repr__(self, *args, **kwargs):
@@ -120,7 +121,8 @@ class Recommender:
             if user_id == user.id:
                 continue  # skip this user
 
-            similarity = cosine_similarity(this_user.genre_ratings.reshape(1, -1), user.genre_ratings.reshape(1, -1))[0][0]
+            similarity = \
+                cosine_similarity(this_user.genre_ratings.reshape(1, -1), user.genre_ratings.reshape(1, -1))[0][0]
             similarities[user.id] = similarity
 
         # Sort obtained similarities, best first
@@ -129,7 +131,6 @@ class Recommender:
                                                                reverse=True)[:top_n_similar_users]
 
         # Build a new movie rating from similar users
-
 
     def _read_movies(self) -> Tuple[Dict[int, Movie], List[str]]:
         """
@@ -159,7 +160,7 @@ class Recommender:
         return movies, sorted(list(genres_set))
 
     def _read_users(self):
-        users: Dict[User] = {}
+        users: Dict[int, User] = {}
 
         with open(self.ratings_csv_fn, encoding="utf-8") as f:
             f.readline()
@@ -173,6 +174,7 @@ class Recommender:
                     users[user_id] = User(user_id, len(self.genre_str_to_id))
 
                 users[user_id].movies_rated.add(movie_id)
+                users[user_id].ratings[movie_id] = rating
                 for movie_genre in self.movies[movie_id].genres:
                     if rating >= RATING_THRESHOLD:
                         users[user_id].genre_ratings[self.genre_str_to_id[movie_genre]] += 1
