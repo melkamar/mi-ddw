@@ -1,4 +1,3 @@
-from pprint import pprint
 import csv
 import numpy
 
@@ -26,7 +25,6 @@ class Recommender:
     def read_movies(self):
         """
         Read datafile with movies.
-        :param fn:
         :return: Tuple: (
                          dict of Movie objects (key = movie_id),
                          list of genres (as strings)
@@ -68,11 +66,6 @@ class Recommender:
                 for movie_genre in self.movies[movie_id].genres:
                     if rating >= RATING_THRESHOLD:
                         users[user_id].ratings[self.genre_str_to_id[movie_genre]] += 1
-
-                        # genres = [genre.strip() for genre in rating_row[2].split('|') if genre.strip() not in SKIP_GENRES]
-                        # movie = Movie(movie_id, title, genres)
-                        # users[movie_id] = movie
-                        # genres_set = genres_set.union(set(genres))
 
         return users
 
