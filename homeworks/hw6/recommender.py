@@ -75,7 +75,22 @@ class Recommender:
 
         self.users: Dict[int, User] = self._read_users()
 
-    def print_user_ratings(self, user_id):
+    def print_movies_ratings(self):
+        """ Print average ratings for all movies. """
+        score_sums: Dict[int, List[float, int]] = {}
+        for user in self.users.values():
+            for movie_id, rating in user.ratings.items():
+                if movie_id not in score_sums:
+                    score_sums[movie_id] = [0, 0]
+
+                score_sums[movie_id][0] += user.ratings[movie_id]
+                score_sums[movie_id][1] += 1
+
+        for movie_id, (score_sum, users_count) in score_sums.items():
+            print(f"{self.movies[movie_id].title:{100}.{50}} ({movie_id:{6}}): {score_sum/users_count:{6}.{4}}")
+
+    def print_user_genre_ratings(self, user_id):
+        """ Print summary of which genre was ranked how many times by the user. """
         self.users[user_id].print_genre_ratings(self.genre_id_to_str)
 
     def print_recommended_movies(self, recommended_movies):
@@ -268,15 +283,12 @@ def main():
     recommender = Recommender('data/movies.csv', 'data/ratings.csv')
 
     user_id = 1
-    recommendation_count = 0
+    recommendation_count = 10
 
-    # content_recommended_movies = recommender.recommend_content_based(user_id, limit_results=recommendation_count)
-    # pprint(content_recommended_movies)
+    recommender.print_movies_ratings()
+    recommender.print_user_genre_ratings(user_id)
 
-    # collab_recommended_movies = recommender.recommend_collaborative_based(user_id, limit_results=recommendation_count)
-    # pprint(collab_recommended_movies)
-
-    hybrid_recommended = recommender.recommend_hybrid_based(1, 10)
+    hybrid_recommended = recommender.recommend_hybrid_based(user_id, recommendation_count)
     recommender.print_recommended_movies(hybrid_recommended)
 
 
