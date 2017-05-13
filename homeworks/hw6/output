@@ -1,0 +1,101 @@
+User 1 genre ratings:
+  Drama: 1.0
+  Thriller: 1.0
+  Adventure: 0.75
+  Sci-Fi: 0.75
+  Action: 0.5
+  Comedy: 0.5
+  Horror: 0.5
+  Animation: 0.25
+  Children: 0.25
+  Crime: 0.25
+  Fantasy: 0.25
+  Musical: 0.25
+  Romance: 0.25
+  Western: 0.25
+********************************************************************************
+Using similar users:
+[(560, 0.94297028470422806),
+ (78, 0.94141114569874074),
+ (526, 0.93906641713243766),
+ (21, 0.93558586364877061),
+ (34, 0.93438300885953807),
+ (355, 0.93282032152311112),
+ (73, 0.926568946622645),
+ (134, 0.92568340797754212),
+ (243, 0.92393860912073222),
+ (214, 0.92352957716219708),
+ (218, 0.92336375804295712),
+ (225, 0.92302291625632904),
+ (75, 0.92275610444238965),
+ (426, 0.92224434462210358),
+ (615, 0.92155253749428512),
+ (108, 0.92068077884175392),
+ (144, 0.92014826728949939),
+ (90, 0.92012414309275936),
+ (199, 0.91962244445918406),
+ (103, 0.91961022691317018)]
+********************************************************************************
+Recommended movies for User 1 with parameters:
+    Content-based recommendation weight:     0.3
+    Collaboration-filtering weight:          0.7
+    Number of most similar users considered: 20
+
+--------------------------------------------------------------------------------
+    Movie title                                        | Movie ID | Score
+--------------------------------------------------------------------------------
+ 1. WarGames (1983)                                    |     6979 | 1.229
+ 2. Shooter (2007)                                     |    51935 | 1.209
+ 3. Babel (2006)                                       |    46723 | 1.204
+ 4. Mad Max: Fury Road (2015)                          |   122882 | 1.198
+ 5. Some Folks Call It a Sling Blade (1993)            |      678 | 1.197
+ 6. Die Another Day (2002)                             |     5872 | 1.188
+ 7. Treasure of the Sierra Madre, The (1948)           |     1254 | 1.174
+ 8. Man Who Would Be King, The (1975)                  |     1303 | 1.173
+ 9. Warriors, The (1979)                               |     7802 | 1.165
+10. City of Lost Children, The (Cité des enfants perdu |       29 | 1.157
+--------------------------------------------------------------------------------
+
+========================================================================================================================
+
+********************************************************************************
+Recommended movies for User 1 with parameters:
+    Content-based recommendation weight:     0.5
+    Collaboration-filtering weight:          0.5
+    Number of most similar users considered: 20
+
+--------------------------------------------------------------------------------
+    Movie title                                        | Movie ID | Score
+--------------------------------------------------------------------------------
+ 1. WarGames (1983)                                    |     6979 | 1.382
+ 2. Shooter (2007)                                     |    51935 | 1.348
+ 3. Mad Max: Fury Road (2015)                          |   122882 | 1.343
+ 4. Babel (2006)                                       |    46723 | 1.341
+ 5. Some Folks Call It a Sling Blade (1993)            |      678 | 1.333
+ 6. Die Another Day (2002)                             |     5872 | 1.313
+ 7. Treasure of the Sierra Madre, The (1948)           |     1254 | 1.294
+ 8. Man Who Would Be King, The (1975)                  |     1303 | 1.292
+ 9. Warriors, The (1979)                               |     7802 | 1.285
+10. City of Lost Children, The (Cité des enfants perdu |       29 | 1.275
+--------------------------------------------------------------------------------
+
+********************************************************************************
+Recommended movies for User 1 with parameters:
+    Content-based recommendation weight:     0.7
+    Collaboration-filtering weight:          0.3
+    Number of most similar users considered: 20
+
+--------------------------------------------------------------------------------
+    Movie title                                        | Movie ID | Score
+--------------------------------------------------------------------------------
+ 1. WarGames (1983)                                    |     6979 | 1.535
+ 2. Mad Max: Fury Road (2015)                          |   122882 | 1.487
+ 3. Shooter (2007)                                     |    51935 | 1.487
+ 4. Babel (2006)                                       |    46723 | 1.477
+ 5. Some Folks Call It a Sling Blade (1993)            |      678 | 1.469
+ 6. Die Another Day (2002)                             |     5872 | 1.438
+ 7. Treasure of the Sierra Madre, The (1948)           |     1254 | 1.415
+ 8. Man Who Would Be King, The (1975)                  |     1303 | 1.411
+ 9. Ghost in the Shell 2: Innocence (a.k.a. Innocence) |    27728 | 1.407
+10. Warriors, The (1979)                               |     7802 | 1.406
+--------------------------------------------------------------------------------
