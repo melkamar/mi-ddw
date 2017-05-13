@@ -1,5 +1,8 @@
 import csv
 import numpy
+from sklearn.metrics.pairwise import cosine_similarity
+
+numpy.set_printoptions(precision=2, linewidth=999)
 
 SKIP_GENRES = ['(no genres listed)']
 RATING_THRESHOLD = 2.5
@@ -21,6 +24,20 @@ class Recommender:
         # pprint(genre_str_to_id)
         for user in self.users.values():
             user.print_genre_ratings(self.genre_id_to_str)
+
+    def recommend_content_based(self, user_id, top_n_results):
+        """
+        Calculate cosine similarity of the given User's ratings to all movies in the Recommender (similarity
+        of rated genres). Returns the top N genre-similar movies.
+        E.g. if user
+        :param user_id: ID of the user
+        :param top_n_results: Number of top results to return.
+        :return:
+        """
+        for movie in self.movies:
+            pass
+
+
 
     def _read_movies(self):
         """
@@ -63,9 +80,17 @@ class Recommender:
                 if user_id not in users:
                     users[user_id] = User(user_id, len(self.genre_str_to_id))
 
+                users[user_id].movies_rated.add(movie_id)
                 for movie_genre in self.movies[movie_id].genres:
                     if rating >= RATING_THRESHOLD:
                         users[user_id].ratings[self.genre_str_to_id[movie_genre]] += 1
+
+        # TODO Not sure about this - normalizing user rating vector to have scores in (0,1).
+        # Reason - Vector (3,1,0) would be closer to (0,1,0) than (3,0,0), but user clearly more prefers the first genre
+        for user in users.values():
+            print("{} Pre-normalization: {}".format(user.id, user.ratings))
+            user.ratings = user.ratings / numpy.amax(user.ratings)
+            print("{} Post-normalization: {}".format(user.id, user.ratings))
 
         return users
 
@@ -75,6 +100,7 @@ class User:
         super().__init__()
         self.id = user_id
         self.ratings = numpy.zeros(genres_count, dtype=int)
+        self.movies_rated = set()
 
     def __repr__(self, *args, **kwargs):
         return "User[{}]: {}".format(self.id, self.ratings)
@@ -99,7 +125,7 @@ class Movie:
 
 def main():
     recommender = Recommender('data/movies.csv', 'data/ratings.csv')
-
+    recommender.recommend_content_based(1, 5)
 
 if __name__ == '__main__':
     main()
