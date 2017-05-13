@@ -12,17 +12,17 @@ class Recommender:
         self.movies_csv_fn = movies_csv
         self.ratings_csv_fn = ratings_csv
 
-        self.movies, self.genres_list = self.read_movies()
+        self.movies, self.genres_list = self._read_movies()
         self.genre_str_to_id = {genre: i for i, genre in enumerate(self.genres_list)}
         self.genre_id_to_str = {i: genre for i, genre in enumerate(self.genres_list)}
 
-        self.users = self.read_users()
+        self.users = self._read_users()
 
         # pprint(genre_str_to_id)
         for user in self.users.values():
             user.print_genre_ratings(self.genre_id_to_str)
 
-    def read_movies(self):
+    def _read_movies(self):
         """
         Read datafile with movies.
         :return: Tuple: (
@@ -49,7 +49,7 @@ class Recommender:
 
         return movies, sorted(list(genres_set))
 
-    def read_users(self):
+    def _read_users(self):
         users = {}
 
         with open(self.ratings_csv_fn, encoding="utf-8") as f:
