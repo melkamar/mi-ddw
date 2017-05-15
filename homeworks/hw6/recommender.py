@@ -73,7 +73,7 @@ class Recommender:
         for movie in self.movies.values():
             movie.populate_genres_vector(self.genre_str_to_id)
 
-        self.users: Dict[int, User] = self._read_users()
+        self.users: Dict[int, User] = self._read_users(self.ratings_csv_fn)
 
     def print_movies_ratings(self):
         """ Print average ratings for all movies. """
@@ -190,10 +190,10 @@ class Recommender:
                                                                key=lambda item: item[1],
                                                                reverse=True)[:use_top_n_similar_users]
 
-        print("*" * 80)
-        print("Using similar users:")
-        pprint(sorted_similar_users)
-        print("*" * 80)
+        # print("*" * 80)
+        # print("Using similar users:")
+        # pprint(sorted_similar_users)
+        # print("*" * 80)
         # Build a new movie rating from similar users
         # ranking = (A_ranking * A_weight + B_ranking*B_weight +... ) / len(users)
         temp_ratings: Dict[int, List[float, int]] = {}  # Dict of {movie_id: (sum_ratings, count_people)}
@@ -336,21 +336,25 @@ class Evaluator:
             raise ValueError(f"Unknown recommendation system type ID: {recommend_type}")
 
         testing_user: User = self.testing_users_data[user_id]
-        recall = self._calc_recall(recommended_movies, testing_user.movies_rated)
-        precision = self._calc_precision(recommended_movies, testing_user.movies_rated)
+        recall = self._calc_recall([item[0] for item in recommended_movies], testing_user.movies_rated)
+        precision = self._calc_precision([item[0] for item in recommended_movies], testing_user.movies_rated)
         fmeasure = self._calc_fmeasure(precision, recall)
 
-        print(f"""Evaluation of {self._recom_sys_id_to_str(recommend_type)} recommendations:
-    User ID: {testing_user}
-    """)
+        self._print_eval_stats(recommend_type, user_id, precision, recall, fmeasure, **kwargs)
+
+        # print(f"""Evaluation of {self._recom_sys_id_to_str(recommend_type)} recommendations:
+    # User ID: {testing_user}
+    # """)
 
     def _print_eval_stats(self, recommend_type: int, user_id: int, precision, recall, fmeasure, **kwargs):
         limit_results = kwargs['limit_results']
 
+        print("*"*80)
         print(f"""Evaluation of {self._recom_sys_id_to_str(recommend_type)} recommendations:
     User ID: {user_id}
     Number of recommendations: {limit_results}""")
         if recommend_type == Evaluator.RECOMMEND_SYSTEM_CONTENT_BASED:
+            pass
         elif recommend_type == Evaluator.RECOMMEND_SYSTEM_COLLABORATIVE_FILTERING:
             top_n_users = kwargs['top_n_users']
             print(f"""
@@ -370,6 +374,7 @@ class Evaluator:
     Precision: {precision}
     Recall:    {recall}
     F-measure: {fmeasure}""")
+        print("*" * 80)
 
     @staticmethod
     def _calc_recall(recommended_movies: List[int], rated_movies: Set[int]) -> float:
@@ -412,8 +417,8 @@ class Evaluator:
 def run_eval():
     evaluator = Evaluator('data/ratings-training.csv', 'data/ratings-testing.csv', 'data/movies.csv')
 
-    user_id = 1
-    limit_results = 20
+    user_id = 15
+    limit_results = 50
     top_n_users = 20
     weights = [
         (1, 9),
@@ -426,18 +431,22 @@ def run_eval():
     evaluator.evaluate(user_id, Evaluator.RECOMMEND_SYSTEM_COLLABORATIVE_FILTERING, limit_results=limit_results,
                        top_n_users=top_n_users)
     evaluator.evaluate(user_id, Evaluator.RECOMMEND_SYSTEM_CONTENT_BASED, limit_results=limit_results)
+
     for collab_weight, content_weight in weights:
-        Evaluator.evaluate(user_id, Evaluator.RECOMMEND_SYSTEM_HYBRID, limit_results=limit_results,
+        evaluator.evaluate(user_id, Evaluator.RECOMMEND_SYSTEM_HYBRID, limit_results=limit_results,
                            top_n_users=top_n_users,
                            weight_collabr_based=collab_weight,
                            weight_content_based=content_weight)
 
 
 def main():
+    run_eval()
+    exit()
+
     recommender = Recommender('data/movies.csv', 'data/ratings.csv')
 
-    user_id = 1
-    recommendation_count = 10
+    user_id = 10
+    recommendation_count = 500
 
     weight_content_based = 0.3
     weight_collabr_based = 0.7
