@@ -409,6 +409,30 @@ class Evaluator:
         return 2 * (precision * recall) / (precision + recall)
 
 
+def run_eval():
+    evaluator = Evaluator('data/ratings-training.csv', 'data/ratings-testing.csv', 'data/movies.csv')
+
+    user_id = 1
+    limit_results = 20
+    top_n_users = 20
+    weights = [
+        (1, 9),
+        (3, 7),
+        (5, 5),
+        (7, 3),
+        (9, 1),
+    ]
+
+    evaluator.evaluate(user_id, Evaluator.RECOMMEND_SYSTEM_COLLABORATIVE_FILTERING, limit_results=limit_results,
+                       top_n_users=top_n_users)
+    evaluator.evaluate(user_id, Evaluator.RECOMMEND_SYSTEM_CONTENT_BASED, limit_results=limit_results)
+    for collab_weight, content_weight in weights:
+        Evaluator.evaluate(user_id, Evaluator.RECOMMEND_SYSTEM_HYBRID, limit_results=limit_results,
+                           top_n_users=top_n_users,
+                           weight_collabr_based=collab_weight,
+                           weight_content_based=content_weight)
+
+
 def main():
     recommender = Recommender('data/movies.csv', 'data/ratings.csv')
 
