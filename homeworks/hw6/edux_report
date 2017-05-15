@@ -32,13 +32,13 @@ Naměřené statistiky jednotlivých algoritmů jsou uvedené v následující t
 uživatele s ID 15 a uvažoval jsem 50 nejlepších filmů.
 
 ^ Algoritmus ^ Precision ^ Recall ^ F-measure ^
-Content-based | 0.08 | 0.0047 | 0.0088 |
-Collaborative filtering | 0.34 | 0.02 | 0.0377 |
-Hybrid (content:collab 9:1) | 0.34 | 0.02 | 0.0377 |
-Hybrid (content:collab 7:3) | 0.32 | 0.0188 | 0.0355 |
-Hybrid (content:collab 5:5) | 0.38 | 0.022 | 0.0422 |
-Hybrid (content:collab 3:7) | 0.42 | 0.0247 | 0.0466 |
-Hybrid (content:collab 1:9) | 0.48 | 0.02828 | 0.0533 |
+| Content-based | 0.08 | 0.0047 | 0.0088 |
+| Collaborative filtering | 0.34 | 0.02 | 0.0377 |
+| Hybrid (content:collab 9:1) | 0.34 | 0.02 | 0.0377 |
+| Hybrid (content:collab 7:3) | 0.32 | 0.0188 | 0.0355 |
+| Hybrid (content:collab 5:5) | 0.38 | 0.022 | 0.0422 |
+| Hybrid (content:collab 3:7) | 0.42 | 0.0247 | 0.0466 |
+| Hybrid (content:collab 1:9) | 0.48 | 0.02828 | 0.0533 |
 
 Jak je vidět, hybridní přístup je lepší než oba jednotlivé, s tím, že algoritmus dává lepší výsledky při vyšší váze
 kolaborativního filtrování.
