@@ -27,7 +27,15 @@ Tento přístup je kombinací výše popsaných dvou. Pro daného uživatele zí
 je podle zadaných vah a výsledné skóre každého z filmů je součet těchto dvou skóre. Před převážením a součtem obě
 skóre normalizuji do intervalu (0,1). Opět, doporučené filmy jsou ty s největším skóre.
 
-==== Stats ====
+==== Testing ====
+=== Manual ===
+Při implementaci jsem zběžně ručně testoval "sanitu" algoritmů, a výsledky byly podle očekávání.
+
+Content-based doporučování fungovalo, jak mělo - doporučené filmy pro uživatele s ID 1 patřily do kategorií Drama, Thriller, Sci-Fi a Adventure, což jsou nejčastěji hodnocené žánry uživatele.
+
+Collaborative filtering také dávalo očekávané výsledky - při zohlednění jen jednoho uživatele byly doporučené filmy ty, které tento uživatel hodnotil nejlépe. Při zohlednění dvou nejpodobnějších uživatelů byly doporučované filmy ty, které hodnotil jeden či oba podobní uživatelé pěti hvězdičkami. Nejméně doporučené pak byly ty, které byly ohodnoceny špatně. 
+
+=== Stats ===
 Naměřené statistiky jednotlivých algoritmů jsou uvedené v následující tabulce. Hledal jsem doporučení pro
 uživatele s ID 15 a uvažoval jsem 50 nejlepších filmů.
 
@@ -42,6 +50,8 @@ uživatele s ID 15 a uvažoval jsem 50 nejlepších filmů.
 
 Jak je vidět, hybridní přístup je lepší než oba jednotlivé, s tím, že algoritmus dává lepší výsledky při vyšší váze
 kolaborativního filtrování.
+
+Ukázkový výstup práce algoritmu je v GitHub repozitáři zde: https://github.com/melkamar/mi-ddw/blob/master/homeworks/hw6/output
 
 ==== Sources ====
 [[https://github.com/melkamar/mi-ddw/tree/master/homeworks/hw6|GitHub]]
