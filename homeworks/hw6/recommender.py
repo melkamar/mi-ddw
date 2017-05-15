@@ -280,17 +280,96 @@ class Recommender:
 
 
 class Evaluator:
+    RECOMMEND_SYSTEM_CONTENT_BASED = 1
+    RECOMMEND_SYSTEM_COLLABORATIVE_FILTERING = 2
+    RECOMMEND_SYSTEM_HYBRID = 3
+
     def __init__(self, training_fn, testing_fn, movies_fn):
         super().__init__()
         self.recommender = Recommender(movies_fn, training_fn)
         self.testing_users_data = self.recommender._read_users(testing_fn)
 
-    def evaluate(self, user_id, weight_content_based, weight_collabr_based, top_n_users):
-        recommended_movies = self.recommender.recommend_hybrid_based(user_id, 20, weight_content_based,
-                                                                     weight_collabr_based, top_n_users)
+    def _recom_sys_id_to_str(self, recommend_type: int) -> str:
+        if recommend_type == Evaluator.RECOMMEND_SYSTEM_CONTENT_BASED:
+            return "Content-based"
+        elif recommend_type == Evaluator.RECOMMEND_SYSTEM_COLLABORATIVE_FILTERING:
+            return "Collaborative filtering"
+        elif recommend_type == Evaluator.RECOMMEND_SYSTEM_HYBRID:
+            return "Hybrid"
+        else:
+            raise ValueError(f"Unknown recommendation system type ID: {recommend_type}")
+
+    # def evaluate(self, user_id, weight_content_based, weight_collabr_based, top_n_users):
+    def evaluate(self, user_id: int, recommend_type: int, **kwargs):
+        """
+        Evaluate a recommendation system.
+
+        :param user_id:
+        :param recommend_type: Evaluator.RECOMMEND_SYSTEM_*
+        :param kwargs: Based on selected recommendation system:
+                        - For all:
+                            - limit_results - how many movies should be recommended
+                        - Content-based:
+                            - no params
+                        - Collaborative:
+                            - top_n_users - number of most similar users to take into account
+                        - Hybrid:
+                            - top_n_users - number of most similar users to take into account
+                            - weight_content_based - weight of the content-based recommendations
+                            - weight_collabr_based - weight of the collaborative recommendations
+        :return:
+        """
+        limit_results = kwargs['limit_results']
+
+        if recommend_type == Evaluator.RECOMMEND_SYSTEM_CONTENT_BASED:
+            recommended_movies = self.recommender.recommend_content_based(user_id, limit_results)
+        elif recommend_type == Evaluator.RECOMMEND_SYSTEM_COLLABORATIVE_FILTERING:
+            top_n_users = kwargs['top_n_users']
+            recommended_movies = self.recommender.recommend_collaborative_based(user_id, limit_results, top_n_users)
+        elif recommend_type == Evaluator.RECOMMEND_SYSTEM_HYBRID:
+            weight_content_based = kwargs['weight_content_based']
+            weight_collabr_based = kwargs['weight_collabr_based']
+            top_n_users = kwargs['top_n_users']
+            recommended_movies = self.recommender.recommend_hybrid_based(user_id, limit_results, weight_content_based,
+                                                                         weight_collabr_based, top_n_users)
+        else:
+            raise ValueError(f"Unknown recommendation system type ID: {recommend_type}")
 
         testing_user: User = self.testing_users_data[user_id]
         recall = self._calc_recall(recommended_movies, testing_user.movies_rated)
+        precision = self._calc_precision(recommended_movies, testing_user.movies_rated)
+        fmeasure = self._calc_fmeasure(precision, recall)
+
+        print(f"""Evaluation of {self._recom_sys_id_to_str(recommend_type)} recommendations:
+    User ID: {testing_user}
+    """)
+
+    def _print_eval_stats(self, recommend_type: int, user_id: int, precision, recall, fmeasure, **kwargs):
+        limit_results = kwargs['limit_results']
+
+        print(f"""Evaluation of {self._recom_sys_id_to_str(recommend_type)} recommendations:
+    User ID: {user_id}
+    Number of recommendations: {limit_results}""")
+        if recommend_type == Evaluator.RECOMMEND_SYSTEM_CONTENT_BASED:
+        elif recommend_type == Evaluator.RECOMMEND_SYSTEM_COLLABORATIVE_FILTERING:
+            top_n_users = kwargs['top_n_users']
+            print(f"""
+    Using top similar users: {top_n_users}""")
+        elif recommend_type == Evaluator.RECOMMEND_SYSTEM_HYBRID:
+            weight_content_based = kwargs['weight_content_based']
+            weight_collabr_based = kwargs['weight_collabr_based']
+            top_n_users = kwargs['top_n_users']
+            print(f"""
+    Using top similar users: {top_n_users}
+    Content-based weight:    {weight_content_based}
+    Collaboration weight:    {weight_collabr_based}""")
+        else:
+            raise ValueError(f"Unknown recommendation system type ID: {recommend_type}")
+
+        print(f"""
+    Precision: {precision}
+    Recall:    {recall}
+    F-measure: {fmeasure}""")
 
     def _calc_recall(self, recommended_movies: List[int], rated_movies: Set[int]) -> float:
         """
