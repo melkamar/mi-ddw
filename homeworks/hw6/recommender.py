@@ -371,7 +371,8 @@ class Evaluator:
     Recall:    {recall}
     F-measure: {fmeasure}""")
 
-    def _calc_recall(self, recommended_movies: List[int], rated_movies: Set[int]) -> float:
+    @staticmethod
+    def _calc_recall(recommended_movies: List[int], rated_movies: Set[int]) -> float:
         """
         Calculate recall of the recommendation system.
         :param recommended_movies: List of IDs of movies that were recommended by the system.
@@ -385,7 +386,8 @@ class Evaluator:
 
         return relevant_count / len(rated_movies)
 
-    def _calc_precision(self, recommended_movies: List[int], rated_movies: Set[int]) -> float:
+    @staticmethod
+    def _calc_precision(recommended_movies: List[int], rated_movies: Set[int]) -> float:
         """
         Calculate precision of the recommendation system.
         :param recommended_movies: List of IDs of movies that were recommended by the system.
@@ -399,7 +401,8 @@ class Evaluator:
 
         return relevant_count / len(recommended_movies)
 
-    def _calc_fmeasure(self, precision, recall):
+    @staticmethod
+    def _calc_fmeasure(precision, recall):
         if precision == 0 and recall == 0:
             return 0
 
