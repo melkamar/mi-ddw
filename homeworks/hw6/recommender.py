@@ -1,5 +1,5 @@
 import csv
-from typing import List, Dict, Tuple
+from typing import List, Dict, Tuple, Set
 from pprint import pprint
 
 import numpy
@@ -251,10 +251,10 @@ class Recommender:
 
         return movies, sorted(list(genres_set))
 
-    def _read_users(self) -> Dict[int, User]:
+    def _read_users(self, ratings_csv_fn) -> Dict[int, User]:
         users: Dict[int, User] = {}
 
-        with open(self.ratings_csv_fn, encoding="utf-8") as f:
+        with open(ratings_csv_fn, encoding="utf-8") as f:
             f.readline()
             f.readline()
             reader = csv.reader(f, delimiter=',', )
@@ -277,6 +277,54 @@ class Recommender:
             user.genre_ratings = user.genre_ratings / numpy.amax(user.genre_ratings)
 
         return users
+
+
+class Evaluator:
+    def __init__(self, training_fn, testing_fn, movies_fn):
+        super().__init__()
+        self.recommender = Recommender(movies_fn, training_fn)
+        self.testing_users_data = self.recommender._read_users(testing_fn)
+
+    def evaluate(self, user_id, weight_content_based, weight_collabr_based, top_n_users):
+        recommended_movies = self.recommender.recommend_hybrid_based(user_id, 20, weight_content_based,
+                                                                     weight_collabr_based, top_n_users)
+
+        testing_user: User = self.testing_users_data[user_id]
+        recall = self._calc_recall(recommended_movies, testing_user.movies_rated)
+
+    def _calc_recall(self, recommended_movies: List[int], rated_movies: Set[int]) -> float:
+        """
+        Calculate recall of the recommendation system.
+        :param recommended_movies: List of IDs of movies that were recommended by the system.
+        :param rated_movies: List of IDs of movies that the user actually rated.
+        :return: Returns recall measure from the given data.
+        """
+        relevant_count = 0
+        for movie_id in recommended_movies:
+            if movie_id in rated_movies:
+                relevant_count += 1
+
+        return relevant_count / len(rated_movies)
+
+    def _calc_precision(self, recommended_movies: List[int], rated_movies: Set[int]) -> float:
+        """
+        Calculate precision of the recommendation system.
+        :param recommended_movies: List of IDs of movies that were recommended by the system.
+        :param rated_movies: List of IDs of movies that the user actually rated.
+        :return: Returns precision measure from the given data.
+        """
+        relevant_count = 0
+        for movie_id in recommended_movies:
+            if movie_id in rated_movies:
+                relevant_count += 1
+
+        return relevant_count / len(recommended_movies)
+
+    def _calc_fmeasure(self, precision, recall):
+        if precision == 0 and recall == 0:
+            return 0
+
+        return 2 * (precision * recall) / (precision + recall)
 
 
 def main():
