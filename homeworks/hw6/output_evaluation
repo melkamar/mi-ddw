@@ -1,0 +1,85 @@
+********************************************************************************
+Evaluation of Collaborative filtering recommendations:
+    User ID: 15
+    Number of recommendations: 50
+
+    Using top similar users: 20
+
+    Precision: 0.34
+    Recall:    0.02
+    F-measure: 0.03777777777777778
+********************************************************************************
+********************************************************************************
+Evaluation of Content-based recommendations:
+    User ID: 15
+    Number of recommendations: 50
+
+    Precision: 0.08
+    Recall:    0.004705882352941176
+    F-measure: 0.008888888888888889
+********************************************************************************
+********************************************************************************
+Evaluation of Hybrid recommendations:
+    User ID: 15
+    Number of recommendations: 50
+
+    Using top similar users: 20
+    Content-based weight:    9
+    Collaboration weight:    1
+
+    Precision: 0.34
+    Recall:    0.02
+    F-measure: 0.03777777777777778
+********************************************************************************
+********************************************************************************
+Evaluation of Hybrid recommendations:
+    User ID: 15
+    Number of recommendations: 50
+
+    Using top similar users: 20
+    Content-based weight:    7
+    Collaboration weight:    3
+
+    Precision: 0.32
+    Recall:    0.018823529411764704
+    F-measure: 0.035555555555555556
+********************************************************************************
+********************************************************************************
+Evaluation of Hybrid recommendations:
+    User ID: 15
+    Number of recommendations: 50
+
+    Using top similar users: 20
+    Content-based weight:    5
+    Collaboration weight:    5
+
+    Precision: 0.38
+    Recall:    0.02235294117647059
+    F-measure: 0.042222222222222223
+********************************************************************************
+********************************************************************************
+Evaluation of Hybrid recommendations:
+    User ID: 15
+    Number of recommendations: 50
+
+    Using top similar users: 20
+    Content-based weight:    3
+    Collaboration weight:    7
+
+    Precision: 0.42
+    Recall:    0.024705882352941175
+    F-measure: 0.04666666666666666
+********************************************************************************
+********************************************************************************
+Evaluation of Hybrid recommendations:
+    User ID: 15
+    Number of recommendations: 50
+
+    Using top similar users: 20
+    Content-based weight:    1
+    Collaboration weight:    9
+
+    Precision: 0.48
+    Recall:    0.02823529411764706
+    F-measure: 0.053333333333333344
+********************************************************************************

@@ -1,0 +1,60 @@
+====== 6. Recommender Systems ======
+
+==== Typy doporučovacích algoritmů ====
+
+V rámci úkolu jsem implementoval dva typy doporučovacích algoritmů a následně jejich kombinaci - hybridní přístup.
+Realizovány jsou ve třídě ''Recommender'' metodami ''recommend_content_based()'', ''recommend_collaborative_based()'' a
+''recommend_hybrid_based()''. Metody jsou zdokumentovány v kódu (odkaz níže). Zde jen krátce jejich popis:
+
+=== Content-based recsys ===
+Tento způsob doporučování pracuje s metadaty filmů, konkrétně s jejich žánry. Na základě filmů, které uživatel doposud
+ohodnotil, sestavím vektor jeho oblíbených žánrů, ten znormalizuji do hodnot 0 až 1, kde 0 u daného žánru znamená, že
+neohodnotil žádný film tohoto žánru. 1 naopak znamená, že všechny ohodnocené filmy do tohoto žánru spadají.
+
+Po sestavení vektoru pro uživatele jej porovnám s vektory žánrů všech filmů v databázi a pro každý spočtu jejich
+podobnost. Jako metriku volím kosinovou vzdálenost. Filmy poté seřadím sestupně podle jejich vzdáleností a určitý počet
+těch nejpodobnějších zvolím jako doporučení uživateli. Vůbec v tomto případě nehraje roli skutečné hodnocení filmu.
+
+=== Collaborative filtering ===
+V tomto algoritmu hrají roli ostatní uživatelé. Nejprve opět pomocí kosinové vzdálenosti určím, kteří uživatelé jsou
+nejpodobnější tomu, pro kterého chci najít doporučení. Budu uvažovat několik nejpodobnějších uživatelů, z jejich
+hodnocení sestavím agregovaný vektor hodnocení filmů, kde jednotlivá hodnocení jsou váženým průměrem hodnocení uživatelů
+a jejich podobnostního skóre. Seznam takto ohodnocených filmů seřadím sestupně a ty s největším skóre doporučím
+uživateli.
+
+=== Hybrid approach ===
+Tento přístup je kombinací výše popsaných dvou. Pro daného uživatele získám "doporučovací skóre" všech filmů, převážím
+je podle zadaných vah a výsledné skóre každého z filmů je součet těchto dvou skóre. Před převážením a součtem obě
+skóre normalizuji do intervalu (0,1). Opět, doporučené filmy jsou ty s největším skóre.
+
+==== Stats ====
+Naměřené statistiky jednotlivých algoritmů jsou uvedené v následující tabulce. Hledal jsem doporučení pro
+uživatele s ID 15 a uvažoval jsem 50 nejlepších filmů.
+
+^ Algoritmus ^ Precision ^ Recall ^ F-measure ^
+Content-based | 0.08 | 0.0047 | 0.0088 |
+Collaborative filtering | 0.34 | 0.02 | 0.0377 |
+Hybrid (content:collab 9:1) | 0.34 | 0.02 | 0.0377 |
+Hybrid (content:collab 7:3) | 0.32 | 0.0188 | 0.0355 |
+Hybrid (content:collab 5:5) | 0.38 | 0.022 | 0.0422 |
+Hybrid (content:collab 3:7) | 0.42 | 0.0247 | 0.0466 |
+Hybrid (content:collab 1:9) | 0.48 | 0.02828 | 0.0533 |
+
+Jak je vidět, hybridní přístup je lepší než oba jednotlivé, s tím, že algoritmus dává lepší výsledky při vyšší váze
+kolaborativního filtrování.
+
+==== Sources ====
+[[https://github.com/melkamar/mi-ddw/tree/master/homeworks/hw6|GitHub]]
+
+=== Obsah ===
+
+- ''recommender.py'' - Python skript úkolu
+
+- ''movies_ratings.txt'' - Agregovaná hodnocení filmů (celkové průměrné hodnocení pro každý film)
+
+- ''output'' - Výstupy hybridního doporučovacícho systému pro několik různých kombinací vah.
+
+- ''output_evaluation'' - Statistiky kvality různých doporučovacích přístupů (precision, recall, F-measure)
+
+- ''data'' - zdrojová data pro měření
+
