@@ -155,14 +155,154 @@ Disallow:
         - B-tree delší hledání, ale umí prefix search a najít podobný slova
 
 ## Web Data Mining - Text Mining
+- Extrakce informací a znalostí z textu
 
-## Todo - zařadit
-Kroky text miningu:
+- Proces text miningu:
+    1. Sběr dokumentů
+    2. Preprocessing dokumentů
+    3. Transformace textu, generování featur
+    4. Redukce dimenzionality - výběr featur
+    5. Pattern discovery, klasicky data mining
+    6. Interpretace výsledků
 
-1. Tokenizace (nalezení kapitol, vět, slov)
-2. POS tagging (určení slovních druhů)
-3. Určení anafor (referencí typu *Mr. Smith* did (...) when *he* saw...
-4. Lematizace (převod slova do základního tvaru), stemming (získání kořene slova)
-5. Nalezení entit v textu (Named Entity Recognition) - místa, lidi, instituce
-6. Gazetteery (???)
-7. Získání relací mezi entitami
+- Tokenizace
+    - Nalezení vět, slov -- seskupování znaků do logických celků
+
+- Snížení dimenzionality, převedení tokenů do standardní podoby
+    - Lemmatizace - převod do základního tvaru (was, is, are -> be)
+    - Stemming - určení kořenu slova (waiting -> wait), částečně řízen pravidly, částečně slovníkově
+    - Odstranění stopwords (a, the, it, they)
+    - Synonyma, antonyma
+
+- Sentence splitting
+    - Rozsekání textu na věty
+    - Není triviální, tečka ne vždy ukončuje větu
+
+- Part-of-speech tagging
+    - Rozpoznání slovních druhů (noun, proper noun, adjective, verb, pronoun...)
+    - Stejná slova můžou mít samozřejmě různé výrazy, není to easy
+    - Postupy na tagování:
+        - Už mám otagovaný nějaký set dokumentů, tím naučím nějaký klasifikátor
+        - Regexp pravidla
+        - Obecně pravidla (pokud mam "to XXX", pak je XXX sloveso)
+        - N-gramy
+
+- Named entity recognition
+    - Identifikace entit a klasifikace, co to je za entitu
+    - NER dělá:
+        - Rozpoznání entit
+        - Klasifikace
+        - Disambiguation tím, že ke třídě ještě přiřadím třeba Wikipedia URL s tou entitou
+    - Založeno na gramatikách nebo Gazetteers, což jsou seznamy/slovníky států, lidí, geolokací
+    - Množina tříd může být předdefinovaná, nebo dynamicky tvořená (LOC, GPE, ORG, MISC)
+    - Slova jsou mnohoznačná, NER může použít *linking*, aby se tomu vyhnul - k entitě přidá odkaz na nějakej jednoznačnej zdroj.
+    - *Coreference* - různý kusy textu označují tutéž entitu, chcem je tak i stejně označit (Mary Smith, Mrs. Smith)
+
+- Relation Extraction
+    - Vytěžování sémantických vztahů mezi entitami (X pracuje pro Y)
+    - Naivně se dají hledat fixní slovní patterny, ale to neškáluje
+    - Řeší se lingvistickou analýzou (tagging slovních druhů, sestaví se parsing tree, z toho se určí podmět, předmět, přísudek)
+
+- Opinion Mining
+    - Identifikace názorů, emocí, sentimentu z textu - většinou se zkoumá pozitivní, negativní nebo neutrální
+
+    1. Opinion Extraction - identifikace textu, který obsahuje názor, emoce.
+    2. Sentiment Analysis - neřeší komplexnější názory, jen hledá pozitivní/negativní.
+    3. Opinion Summarization - vypočtení celkového názoru z předchozího bodu
+
+    - Lexicon-based - mám seznam dobrých a špatných slov a proti tomu porovnávám. Jsou tu ale issues, třeba před tím slovem dám *not*, nebo je to jenom otázka, nemá to sentiment. Můžu dál expandovat lexikon například hledáním synonym (stejná polarita), antonym (opačná polarita) - WordNet.
+
+    - Sentiment learning
+        - Supervised - mám anotovaná data, na kterých trénuju, například to seberu z recenzí produktů a hvězdiček
+        - Unsupervised - sentiment bude na daných frázích slovních druhů, např "ADJ NN"
+
+- Text summarization
+    - Cíl je vytvoření abstraktu, shrnutí textu
+    - Kroky:
+        - Content selection - jaký věty budu vůbec ve zdroji uvažovat
+        - Information ordering - jak informace uspořádám
+        - Sentence realization - "vyčištění" vět, zjednodušení
+    - Postupy:
+        - Frequency-based - hledám často se opakující N-gramy, ty potom nějakým způsobem spojím.
+        - Baseline Single Document - hledám nejdůležitější slova v textu, k nim pak clustery okolních důležitých slov, pak vypočtu skóre každého z clusterů a ve finále budu uvažovat věty, které mají clustery s nejvyššími skóre.
+
+- *NIF*
+    - Natural language processing Interchange Format
+    - Standard anotací, má URI schéma
+
+## Web Data Mining - Social Network Analysis
+- Je to o dost starší než Facebook, studuje lidské vztahy pomocí teorie grafů
+- Typy analýzy:
+    - Sociocentrická - analýza celé sítě, identifikace globálních struktur
+    - Egocentrická - analýza okolí jednoho člověka, kvantifikace interakcí mezi jedním uzlem a ostatními
+    - Knowledge-based - pochází z computer science, kvantifikuje interakce mezi uživateli, skupinami a dalšími entitami v síti
+
+- Kevin Bacon / Paul Erdös number - six degrees of separation
+- Measures of centrality:
+    - Metriky pro měření důležitosti, popularity nebo sociálního kapitálu uzlu v síti, na základě jejich connection patterns
+    - Degree centrality - stupeň uzlu - počet hran vedoucí do/z uzlu
+    - Closeness - *1 / (součet vzdáleností do všech ostatních uzlů)*
+    - Betweenness - počet nejkratších cest všech ostatních uzlů, které vedou skrz uzel X dělený počtem všech nejkratších cest
+    - Eigenvector - podobně jako PageRank, iterativně. Uzel s vysokou Eigenvector centralitou je propojen s uzly, které ji mají taky velkou, tedy "kdo je propojen s hodně propojenými uzly?"
+
+#### Clustering
+- Clustering coefficient
+    - pravděpodobnost, že dva náhodní kamarádi daného uzlu jsou taky navzájem kamarádi. Udává koncentrovanost vztahů v clusteru, či globálně úroveň clusterovatelnosti.
+    - (*počet hran mezi sousedy uzlu X*) děleno (*maximální počet hran mezi sousedy uzlu X*)
+    - Viz níže - šedé i černé hrany jsou platné, červené neplatné
+
+    ![](resources/clustering-coefficient.PNG)
+
+- Bridge
+    - Smazáním hrany mezi dvěma uzly by se tyto uzly ocitly ve dvou různých komponentách (vzácné)
+    - **Local bridge** - pokud dva uzly nemají žádné společné přátele, tedy rozpojením by jejich vzdálenost vzrostla na víc než dva.
+    - Embeddedness(A,B) - počet společných sousedů A, B
+
+#### Network-level characteristics
+- **Density**
+    - Poměr hran grafu vůči všem možným hranám (pokud by byl plný, tj. neorientovaný *n(n-1)/2*)
+
+- **Reciprocity**
+    - U orientovaných grafů
+    - Poměr spojení, které vede oběma směry, vůči všem spojením.
+
+- **Components**
+    - Klasická komponenta grafu - spojitý podgraf.
+
+- **Homophily**
+    - Mám dva typy uzlů, např. muži-ženy, bílý-černý. Homophily je, pokud se spolu druží spíš v rámci sexu/rasy než aby se družili se všema.
+    - Pokud je počet cross-gender uzlů výrazně nižší než 2*p*q (kde p, q je podíl té které skupiny), pak je homophilie.
+
+- **Community detection**
+    - Jsou CS způsoby a sociologický způsoby
+    - Obecně, komunita je podmnožina uzlů, ze které do zbytku grafu vede míň hran než kolika je prolinkovaná komunita (ještě neexistuje přesná definice)
+
+    - **Cliques**
+        - Úplný podgraf - každý je s každým v rámci kliky propojen
+
+    - **Partitioning**
+        - Rozdělení grafu na dva clustery, chceme minimalizovat počet uřízlých hran
+        - *Kernighan-Lin* algoritmus:
+            *TODO? Nevim jestli to má význam.*
+        - *Hierarchical clustering*
+            - Sestavení stromu clusterování na základě nějaké podobnosti
+        - *Betweenness* - spočtu betweenness všech dvojic uzlů, uříznu hrany s nejmenší hodnotou
+        - *Island method* - pro každý uzel spočtu "výšku", například centralitu, a pak postupně zvedám "vodu" - nějaký threshold, který mi graf rozdělí.
+        - Komunity se ale často překrývají, existují na to taky nějaký algoritmy, jak je identifikovat.
+
+- **Link prediction**
+    - Sítě jsou vysoce dynamické, pořád se mění. Chci predikovat, kde se budou tvořit hrany (doporučování přátel, interakce mezi proteiny v bioinformatice, doporučovací systémy)
+    - Využívá se známých charakteristik:
+        - Svět je malý, průměrná vzdálenost v síti je docela malá v porovnání s velikostí sítě
+        - Většina nodů má krátký linky
+        - Existují clustery přátel, známých a tak podobně
+    - Obecně těžký problém, mám 1/(V^2) pravděpodobnost, že se trefím.
+    - Algoritmy:
+        - Graph Distance - čím kratší cesta, tím spíš se vytvoří hrana. *score(x,y) = -shortestPath(x,y)*
+        - Common Neighbors - *score(x,y) = <počet společných přátel>*
+
+- **Multinode networks**
+    - Grafy, kde je víc typů uzlů, např. lidi a společnosti(linkedin), přátelé a stránky (fb)
+    - *Affiliation networks* - nepřímé, tranzitivní propojení přes druhý typ uzlu. Počet hran se sečte a ve výsledném grafu tím bude ohodnocena odpovídající hrana:
+
+        ![](resources/affiliation-network.PNG)
