@@ -79,3 +79,33 @@ Disallow:
 </p>
 ```
 - Je třeba HTML fixnout, ne vždy bude validní.
+
+## Web Data Mining
+#### Information retrieval
+- Nalezení dokumentů, který uživatelé chtěji, tedy:
+    - Na základě sady existujících dokumentů a dotazu
+    - Vytvoř ohodnocenou sadu relevantních dokumentů
+    - Chci to rychle, napříč milionama nestrukturovaných dokumentů, spolehlivě, škálovatelně.
+
+- Modely (jak jsou dokumenty reprezentované)
+    - Boolean model
+        - V dokumentech se uvažuje jenom to, jestli se v nich daný term vyskytuje nebo ne (0/1)
+        - Queries se udávají booleovskými operátory a termy stylem `term1 AND (term2 OR term3)`.
+        - Pro retrieval se řeší *jenom* přesná shoda - dokument buď relevantní je, nebo není.
+    - Vector Space model
+        - Dobře známý a obecně používaný model
+        - Používá **TF-IDF** váhové schéma:
+            - TF - term frequency - počet výskytů termu v dokumentů (normalizováno celkovým počtem termů v dokumentu)
+            - IDF - inverse document frequency - udává, jak je slovo běžné napříč všemi dokumenty: ![tfidf formula](resources/tfidf.png)
+            - *TF-IDF = TF × IDF*
+
+## Todo - zařadit
+Kroky text miningu:
+
+1. Tokenizace (nalezení kapitol, vět, slov)
+2. POS tagging (určení slovních druhů)
+3. Určení anafor (referencí typu *Mr. Smith* did (...) when *he* saw...
+4. Lematizace (převod slova do základního tvaru), stemming (získání kořene slova)
+5. Nalezení entit v textu (Named Entity Recognition) - místa, lidi, instituce
+6. Gazetteery (???)
+7. Získání relací mezi entitami
