@@ -80,24 +80,81 @@ Disallow:
 ```
 - Je třeba HTML fixnout, ne vždy bude validní.
 
-## Web Data Mining
+## Web Data Mining - Indexing & Document retrieval
 #### Information retrieval
 - Nalezení dokumentů, který uživatelé chtěji, tedy:
     - Na základě sady existujících dokumentů a dotazu
     - Vytvoř ohodnocenou sadu relevantních dokumentů
     - Chci to rychle, napříč milionama nestrukturovaných dokumentů, spolehlivě, škálovatelně.
 
-- Modely (jak jsou dokumenty reprezentované)
-    - Boolean model
-        - V dokumentech se uvažuje jenom to, jestli se v nich daný term vyskytuje nebo ne (0/1)
-        - Queries se udávají booleovskými operátory a termy stylem `term1 AND (term2 OR term3)`.
-        - Pro retrieval se řeší *jenom* přesná shoda - dokument buď relevantní je, nebo není.
-    - Vector Space model
-        - Dobře známý a obecně používaný model
-        - Používá **TF-IDF** váhové schéma:
-            - TF - term frequency - počet výskytů termu v dokumentů (normalizováno celkovým počtem termů v dokumentu)
-            - IDF - inverse document frequency - udává, jak je slovo běžné napříč všemi dokumenty: ![tfidf formula](resources/tfidf.png)
-            - *TF-IDF = TF × IDF*
+#### Modely
+- jak jsou dokumenty reprezentované
+- Boolean model
+    - V dokumentech se uvažuje jenom to, jestli se v nich daný term vyskytuje nebo ne (0/1)
+    - Queries se udávají booleovskými operátory a termy stylem `term1 AND (term2 OR term3)`.
+    - Pro retrieval se řeší *jenom* přesná shoda - dokument buď relevantní je, nebo není.
+- Vector Space model
+    - Dobře známý a obecně používaný model
+    - Používá **TF-IDF** váhové schéma:
+        - TF - term frequency - počet výskytů termu v dokumentů (normalizováno celkovým počtem termů v dokumentu)
+        - IDF - inverse document frequency - udává, jak je slovo běžné napříč všemi dokumenty: ![tfidf formula](resources/tfidf.png)
+        - *TF-IDF = TF × IDF*
+
+    - Příklad:
+
+        > Slovo se vyskytuje 5x v dokumentu se 100 unikátními slovy -> TF = 5/100
+
+        > Máme 10 000 dokumentů a slovo je (alespoň jednou) ve 100 z nich -> IDF = log(10000/100) = 2
+
+        > TF-IDF = 5/100 * 2 = 1/10
+
+#### Vector space ranking
+- který dokument zvolit, který je nejpodobnější?
+
+- Query je množina slov, na jejím základě nějak vyberu dokumenty, které obsahují alespoň jedno ze slov
+- Query reprezentuju jako vektor (slova -> čísla) (_"hello world hello" -> (1, 0.5)_, první složka je pro _hello_, druhá pro _world_, normalizovaně)
+- Každý kandidátní dokument (docX) reprezentuju jako vektor, kde složky vektoru jsou TF-IDF slov z **query**: (tfidf(hello, docX), tfidf(world, docX))
+- Spočtu vzdálenost vektoru Query a vektoru *každého* z dokumentů, seřadím od nejbližšího, to jsou moje výsledky.
+
+- Vzdálenosti:
+    - Eukleidovská - klasicky odmocnina ze součtu druhých mocnin, není dobrá, protože když budu mít v query (term1, term2), tak potom s každou další dvojicí termů term1 a term2 v dokumentu bude vzdálenost růst, i když by logicky měla bejt cca stejná.
+    - Cosinová - lepší, místo vzdálenosti vektorů se počítá úhel mezi nimi, takže předchozí problém nenastává:
+
+        ![](resources/cosine-distance.PNG)
+
+        Ve jmenovateli je jednoduše násobení vektorů po složkách.
+        Pokud jsou vektory totožné, mají úhel 0 a cos(0) = 1.
+
+#### Evaluation measures
+- jak hodnotit kvalitu systému?
+- Precision - kolik z vrácených dokumentů je skutečně relevantních? - P(relevant | retrieved)
+- Recall - kolik z celkem relevantních dokumentů bylo vráceno? - P(retrieved | relevant)
+- F-measure - tradeoff mezi precision/recall:
+
+    ![](resources/fmeasure.PNG)
+
+#### Indexing
+- sémantika dokumentů a queries jde zachytit množinou index termů - klíčových slov
+- **Document index** - klíčová slova, popisující dokument
+- indexing - proces vytváření indexu pro každý dokument
+- index dokumentů pracuje s *vocabulary* - množinou klíčových slov
+    - manuální indexování
+        - omezená vocabulary, vytvořena před indexováním
+        - kvalitní keywordy, člověk rozumí obsahu, abstrahuje
+        - člověk si nevzpomene na celou knihu při indexaci, drahé, pomalé, nekonzistentní
+    - automatické indexování
+        - nekontrolovaná vocabulary, tvoří se dynamicky při indexaci
+        - chcem imitovat lidi, používáme omezený počet termů
+
+- **Inverted index**
+    - mapování "keyword" -> "doc1, doc2"
+    - tohle je většinou to, co se myslí indexem
+    - buduje se předem, na ve chvíli kdy se řeší query
+    - používají se standardní struktury pro mapy - hashtables, B-trees
+        - hashtable rychlejší lookup, ale při rozumně omezeným počtu termů
+        - B-tree delší hledání, ale umí prefix search a najít podobný slova
+
+## Web Data Mining - Text Mining
 
 ## Todo - zařadit
 Kroky text miningu:
