@@ -306,3 +306,89 @@ Disallow:
     - *Affiliation networks* - nepřímé, tranzitivní propojení přes druhý typ uzlu. Počet hran se sečte a ve výsledném grafu tím bude ohodnocena odpovídající hrana:
 
         ![](resources/affiliation-network.PNG)
+
+## Web Data Mining - PageRank & HITS
+
+- Power Law - pravděpodobnost, že uzel v síti má stupeň *i* je *1/i^x*, kde *x~2.1*.
+- Bow-Tie structure - internet je strukturovaný do "tvaru" motýlka, je tam:
+    - Centrální jádro - většina stránek, to je silně propojený
+    - IN - stránky, který linkujou do jádra, ale odkazy nevedou naopak (nový, nezaindexovaný stránky)
+    - OUT - stránky, kam vedou odkazy z jádra, ale nelinkujou zpátky (interní korporátní stránky)
+    - Tendrils - Stránky dostupné z IN, ale nevedou do jádra
+    - Tubes - dostupné z IN, ale vedou jen do OUT
+    - Disconnected - nikam nelinkujou, nikdo je nelinkuje
+
+    ![](resources/bowtie.jpg)
+
+- Klasické Information Retrieval modely mají problémy (boolean, vector models) - výsledků je moc, všechny stránky jsou defaultně brány jako stejně relevantní, relevance se počítá jen na základě textu.
+- IR se dá jednoduše obejít, např. spam keywordů, SEO.
+- Potřebujeme jiné skóre pro relevanci. Struktura webu je nejlepší dosud známý zdroj dodatečné informace o popularitě.
+
+#### PageRank
+*Poznámka editora - spočtěte si nějaký příklady, alespoň jednu, dvě iterace, je to v přednáškách. Chci to tu zachovat kompaktní, příklady sem dávat nebudu.*
+
+- Využívá graf linků jako indikátor kvality stránek, prestiž stránky je proporcionální součtu prestiže stránek, které na ni odkazují - a je nezávislá na search query, takže se dá v klidu předpočítat a nemusí se toho dělat tolik realtime.
+- Základní myšlenka je ta, že prestiž se mezi stránkama přelévá jako tekutina, pokud důležité stránky linkují nějakou další, tak ta dostane kus té důležitosti.
+
+- **Výpočet**
+    - Výpočet probíhá iterativně, každá iterace používá hodnoty z té předchozí.
+
+    1. PR všechn stránek se inicializuje na nějakou hodnotu, například 1/n (součet má být 1).
+    2. Hodnota PageRanku pro každou stránku *P<sub>i</sub>*, kde *P<sub>j</sub>* jsou stránky, které na ni linkují: ![](resources/pagerank-singlepage.PNG)
+        - stránka "pošle" těm, na které linkuje, poměrnou část svého PR, rovnoměrně rozdělenou.
+
+    - Iterativní výpočet lze reprezentovat maticí a pro iterování jen opakovaně násobit.
+    - PageRank je pak vektor, jeho velikost je počet stránek v síti.
+    - **Matice H**
+        - Základní metoda, matice `n×n`, tam kde nejsou hrany má nuly, tam kde hrany jsou, má takový zlomek, aby v řádku byl součet 1 (nebo 0, pokud není žádná hrana ven):
+
+            ![](resources/pagerank-hmatrix.PNG)
+
+            ![](resources/pagerank-hmatrix-formula.PNG)
+        - Každá iterace *O(n<sup>2</sup>)*, ale matice je řídká, existujou efektivnější algoritmy.
+        - Problémy:
+            - Web graf má stránky bez out-linků (=*rank sinks*, postupně žerou všechen PR, ten u nich mizí)
+            - Má cykly, kde by se PR zasekl a osciloval
+            - Má uzavřené kliky, které si všechen PR syslí pro sebe
+        - Alternativní definice PageRanku - **náhodný surfař**
+            - Matice se nápadně podobá přechodové matici Markovských řetězců (hurá, *SPI*), ale jsou řádky, co nemají součet 1.
+            - Vyberu náhodnou stránku kde začnu, pak udělám náhodně *k* kroků sítí (tj. vybírám náhodné odkazy na stránkách)
+            - Pravděpodobnost, že bude random surfař na stránce *X* po *k* krocích náhodné procházky je totožný jako PageRank stránky *X* po *k* iteracích.
+    - **Matice S**
+        - Mám stejný problém jako před chvílí, ale mám i řešení - *teleportace*! Pokud ze stránky nevede *žádná* hrana, pak uměle přidám hrany do všech stránek v síti:
+
+            ![](resources/pagerank-smatrix.PNG)
+
+        - Tohle už je matice přechodů diskrétního Markovského procesu
+        - ALE pořád není ireducibilní a může být periodická (oscilace PR)
+        - Tj. výpočet **nemusí konvergovat**.
+    - **Matice G** - Google Matrix
+        - Řešením předchozího je matice, kde *S* vynásobím konstantou, *d*, damping faktorem, a ke všem prvkům přičtu *(1-d)/n*. V praxi se používá damping factor ~ 0.85.
+
+            ![](resources/pagerank-gmatrix.PNG)
+        - Výpočet probíhá stejně jako na začátku, opakované násobení matice PR vektorem.
+        - Žádné nulové prvky v matici, je stochastická, aperiodická, ireducibilní, primitivní
+        - **Konverguje.**
+    - Dá se dál modifikovat např. inteligentním surfařem, modifikací teleportace (matice S).
+
+#### HITS
+- Oproti PR celý výpočet závisí na search query
+- Je rychlejší než PR, zpracovává méně stránek
+
+- Dva koncepty - **authority** a **hub**:
+    - Authority - stránka, na kterou vede dost linků - pokud lidi věří stránce, budou na ní odkazovat, a bude z ní autorita
+    - Hub - rozcestník, vedou z něj odkazy pryč - dobré rozcestníky ukazují na autority
+- Cílem je najít nejlepší autority a rozcestníky pro dotaz
+
+- **Výpočet**
+    - Pro danou search query se nejdřív nějak získají root stránky (text retrieval, přes jiný vyhledávač, nějak).
+    - Stránky se expandují o jejich linky, tím se vytvoří set stránek, se kterými se pracuje.
+    - Iterativní výpočet:
+        - Autority-skóre stránky je součet hub-skóre stránek z minulého kroku, které na tuto stránku odkazují.
+        - Hub-skóre stránky je součet autority-skóre stránek z minulého kroku, na které tato stránka odkazuje.
+    - Jde to počítat maticově, jako PageRank:
+        - *a = L<sup>T</sup> × h*
+        - *h = L × a*
+
+- Vždy konverguje
+- Nemá anti-spam featury, stránka s hodně linkama se stane dobrým hubem
