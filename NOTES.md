@@ -392,3 +392,95 @@ Disallow:
 
 - Vždy konverguje
 - Nemá anti-spam featury, stránka s hodně linkama se stane dobrým hubem
+
+## Web Usage Mining, Web Analytics
+
+- Tři vzájemně závislé fáze:
+    1. **Preprocessing, data collection** - dostanu logy, musím to vyčistit, identifikovat transakce, doplnit informace o session na základě znalosti struktury stránky atd.
+    2. **Pattern discovery** - detekce patternů pomocí machine learningu, statistických toolů; sumarizace sessions, uživatelů
+    3. **Pattern analysis** - filtrování, agregace, validace, interpretace nalezených vzorů chování
+
+- **Vstupní data**
+    - Hlavně *usage data*, reálná data z produkce, logy aplikací
+        - čas, IP, URL, status, User-Agent, Cookies
+        - Agregovaně **pageview** (jedna user-action, otevření jedné resource/stránky), **session** (posloupnost pageviews během jedné návštěvy webu)
+    - *Content data* - kolekce objektů a vztahů mezi nimi. Textuální data a multimédia (HTML, obrázky)
+    - *Structure data* - organizace obsahu na portálu, struktura odkazů - graf
+
+#### Collecting & preprocessing
+- **Data collecting**
+    - Explicitně - nejjednodušší, lidi vyplňujou dotazníky, hodnotí. Může být vysoká kvalita, ale uživatele nebaví něco vyplňovat.
+    - Implicitně - neinvazivní, na základě klikání na stránce, eye tracking, postura, výrazy v obličeji, gesta. Privacy problémy kvůli monitorování uživatelů.
+    - Web logy (apache, nginx)
+    - Client-side JS trackers - populární, na webu je data collecting JS overlay, který reportuje co uživatel dělá, aniž by se muselo něco instalovat a lépe se to interpretuje než prostý logy. Dají se tak identifikovat:
+        - **Referral** - jak se sem uživatel dostal? Při prvním přistání na stránce - bylo to na základě search query, nějaký reklamy, kampaně?
+        - **Referrer** - informace o současné relaci
+        - Custom proměnné a flagy.
+
+- **Preprocessing**
+    - Cleaning - odstranění záznamů od crawlerů, error hlášek, přístupů k obrázkům, js, css (pokud to z nějakýho důvodu nepotřebuju)
+    - Identifikace **pageview** - záleží na konkrétním usecase jak to udělat
+    - Identifikace **uživatele** - přiřazení unikátního ID ke všem záznamům, které pocházejí od jednoho uživatele
+        - Unikátní cookies
+        - IP samotná většinou nestačí, NATuje se -> IP+User-Agent
+        - HTTP headery, pluginy, font, Canvas atd. ("fingerprints")
+    - Identifikace **session** - seskupení různých log záznamů do skupin (podle uživatele i času)
+        - Předpoklady, např. délka session bude max 30 minut, délka strávená na jedné stránce bude max 10 minut
+        - Referrer současné stránky už je součástí session, jinak začni novou
+
+#### Pattern discovery
+- **Data modelling**
+    - Mám pageviews jako množinu P
+    - Ke každému pageview váha, např. binární, podle toho, jak dlouho uživatel na stránce zůstal, kolikátá v pořadí stránka byla
+    - *Transakce* - množina pageviews a vah
+
+    - **User-pageview matrix (transaction matrix) - UPM**
+        - pořadí pageviews není důležité
+        - ve sloupcích jednotlivé stránky (nebo eventy ve stránce), v řádcích transakce
+
+            ![](resources/upm-matrix.PNG)
+        - problém s dimenzionalitou
+
+    - *Semantic Information Integration*
+        - Pageview je moc jemná granularita, spíš než stránky mě zajímají featury, sémantický popis toho, co uživatel dělá
+        - Keywords na stránce, např. cena produktu, kategorie
+        - Klasifikace pageview - detail produktu, navigace mezi produkty, úvodní strana?
+        - Tyhle featury se sestavujou během *data collection phase*.
+    - **Pageview-feature matrix - PFM**
+        - Pro každou stránku mám vektor vah fičur:
+
+            ![](resources/pfm-matrix.PNG)
+    - **Content-enhanced transaction matrix (transaction-feature matrix) - TFM**
+        - Sestaveno vynásobením *UPM × PFM* - každý řádek je transakce, ve sloupcích pak featury z *PFM*.
+
+        - Data: ![](resources/pattern-matrix1.PNG)
+        - UPM: ![](resources/pattern-matrix2-upm.PNG)
+        - PFM: ![](resources/pattern-matrix3-pfm.PNG)
+        - TFM: ![](resources/pattern-matrix4-tfm.PNG)
+
+- **Clustering**
+    - Mám data, teď hledam něco zajímavýho - clustery uživatelů, stránek
+    - Standardně třeba *k-means*, podobnost v clusterech max, podobnost mimo cluster min, jako metriku třeba cosine similarity
+
+    - Nejčastěji clusteruju uživatele, hledám ty, co mají podobný surfovací vzory - aplikace v segmentaci trhu, personalizaci, komunitách.
+
+- **Association analysis**
+*Poznámka - stejně jako u PageRanku, podívejte se na příklady, tady jenom obecně popisuju kroky.*
+
+    - Hledám skupiny předmětů, stránek, které jsou často koupeny/navštíveny dohromady -> doporučení uživatelům "ostatní s tímhle koupili tohle"
+    - Algoritmus **apriori**
+        - Tvorba pravidel typu *{párky, hořčice, chleba} -> {pivo}*. (*antecedent => consequent*)
+        - **Support** ~ procento nákupů, který obsahujou všechny čtyři věci.
+        - **Confidence** ~ kdo koupí párky, hořčici a chleba koupí taky s *confidence*-pravděpodobností pivo.
+
+            ![](resources/milk-diaper-bread.PNG)
+
+        - Dva parametry:
+            - `min_sup` - minimální hladina *supportu*
+            - `min_conf` - minimální hladina *confidence*
+
+        - Kroky:
+            1. Vygeneruj dostatečně supportovaný množiny transakcí (množiny, který mají support alespoň `min_sup`
+            2. Vygeneruj dostatečně confidentní asociační pravidla z předchozích setů (pravidla, který mají alespon `min_conf`)
+
+        - **TODO** - projet si v sešitě příklad.
