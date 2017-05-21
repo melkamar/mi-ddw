@@ -521,7 +521,7 @@ Disallow:
             > |~~1,3,5~~|~~1~~  |Vyhazuju|
             > |2,3,5  |2      |        |
             >
-            > Teď pro každou z množin co má alespoň dva prvky vytvořím kandidátní pravidla, tj.
+            > Teď pro každou z množin co jsem nevyhodil a má alespoň dva prvky vytvořím kandidátní pravidla, tj.
             > ```
             > 1 -> 3
             > 3 -> 1
