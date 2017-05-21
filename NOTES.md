@@ -563,7 +563,7 @@ Disallow:
         - *User-based* - identifikuju podobný uživatele tomu, kterému chci doporučit. Na základě toho, co se jim líbilo, vyberu něco.
         - *Item-based* - jde to i podle filmů, spočtu podobnost vektoru hodnocení od všech uživatelů, tím zjistím jak jsou filmy asi podobný, a doporučím podobný těm, který uživatel ohodnotil dobře. *(pořád tady neřeším obsah, řeším jen podobnost v hodnoceních)*
         - Podobnost řeším zase cosinovou vzdáleností, nebo třeba Pearsonovou metrikou.
-        - *Matrix Factorization* - chci objevit latentní(skrytý) faktory uživatelů nebo filmů, a použít je pro doporučení. Místo matice User×Rating budu mít dvě matice - User×Userfeature a Movie×MovFeature, vynásobením získám jediný číslo a to je doporučovací skóre.
+        - *Matrix Factorization* - chci objevit latentní(skrytý) faktory uživatelů nebo filmů, a použít je pro doporučení. Místo matice User×Rating budu mít dvě matice - User×Userfeature a Movie×MovFeature, vynásobením získám jediný číslo a to je doporučovací skóre. Featury se dolujou automaticky - například latentní featura v uživatelích by byl určitej herec ve filmech - tihle lidi hodnotí filmy kde hraje nadprůměrně, tuhle featuru chci objevit - rozdělením matice na dvě toho dosáhnu. *ve slajdech to neni moc dobře popsaný, snad tl;dr stačí.*
         - *Nevýhoda* je, že už musím mít dostatečný množství hodnocení od nějakých uživatelů. Matice bývá řídká, je těžký najít lidi, co hodnotili podobný věci jako já. Nové filmy nejsou vůbec doporučovány a naopak mainstream je doporučovaný pořád, nedá se to použít pro hipstery.
     - **Content-based filtering**
         - analyzuju obsah věcí, na který se uživatel díval. Podle toho pak doporučím podobný věci. Tady ale potřebuju nějaký metadata o věcech.
