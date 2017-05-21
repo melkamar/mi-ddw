@@ -273,7 +273,7 @@ Disallow:
 
 - **Homophily**
     - Mám dva typy uzlů, např. muži-ženy, bílý-černý. Homophily je, pokud se spolu druží spíš v rámci sexu/rasy než aby se družili se všema.
-    - Pokud je počet cross-gender uzlů výrazně nižší než 2*p*q (kde p, q je podíl té které skupiny), pak je homophilie.
+    - Pokud je počet cross-gender hran výrazně nižší než 2*p*q (kde p, q je podíl té které skupiny), pak je homophilie.
 
 - **Community detection**
     - Jsou CS způsoby a sociologický způsoby
