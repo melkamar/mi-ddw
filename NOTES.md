@@ -548,7 +548,41 @@ Disallow:
 
 ## Recommender Systems
 
+*Kdykoliv tu mluvím o filmech, mám tím na mysli jakýkoliv doporučovaný objekt, takhle to bylo jednodušší napsat.*
 
+- Všude je moc informací, hodiny videí každou minutu, lidi to nemůžou zvládnout projít. Všichni doporučujou - Google, Youtube, Amazon, Netflix.
+- **Personalizace** - hlavní myšlenka v doporučovacích systémech. Předpoklady
+    - Pokud jsou uživatelé A a B nějakým způsobem podobní, tak potom bude uživatel A pravděpodobně chtít věci, co chtěl B.
+    - Pokud chtěl uživatel nějaký item I, tak v budoucnosti bude pravděpodobně chtít věci podobné itemu I.
 
+- Typy doporučování
+    - **Collaborative filtering**
+        - *User-based* - identifikuju podobný uživatele tomu, kterému chci doporučit. Na základě toho, co se jim líbilo, vyberu něco.
+        - *Item-based* - jde to i podle filmů, spočtu podobnost vektoru hodnocení od všech uživatelů, tím zjistím jak jsou filmy asi podobný, a doporučím podobný těm, který uživatel ohodnotil dobře. *(pořád tady neřeším obsah, řeším jen podobnost v hodnoceních)*
+        - Podobnost řeším zase cosinovou vzdáleností, nebo třeba Pearsonovou metrikou.
+        - *Matrix Factorization* - chci objevit latentní(skrytý) faktory uživatelů nebo filmů, a použít je pro doporučení. Místo matice User×Rating budu mít dvě matice - User×Userfeature a Movie×MovFeature, vynásobením získám jediný číslo a to je doporučovací skóre.
+        - *Nevýhoda* je, že už musím mít dostatečný množství hodnocení od nějakých uživatelů. Matice bývá řídká, je těžký najít lidi, co hodnotili podobný věci jako já. Nové filmy nejsou vůbec doporučovány a naopak mainstream je doporučovaný pořád, nedá se to použít pro hipstery.
+    - **Content-based filtering**
+        - analyzuju obsah věcí, na který se uživatel díval. Podle toho pak doporučím podobný věci. Tady ale potřebuju nějaký metadata o věcech.
+        - Např. filmy reprezentuju jako vektor žánrů a jejich příslušnosti k nim *(SciFi:1, Western:0, Drama:0.5)*. Pro uživatele sestavím stejný vektor podle toho, co hodnotil (normalizuju do 0-1). Pak počítám podobnosti.
+        - *Výhoda* - nepotřebuju data od ostatních, hipsteři dostanou co chtěj.
+        - *Nevýhoda* - musím být schopen zakódovat vkus lidí do vektoru, jedhoduše přeučím model, možná je to až moc předvídatelný, nejsou tam žádný "milý překvapení".
+    - **Knowledge-based filtering**
+        - v situacích, kdy nemám moc informací. Využívám znalostní databázi, není to personalizované. Jednoduše, *jsem v tomhle kontextu, co mám doporučit?*
+        - typicky pro drahý, unikátní věci; doporučení se mění s časem (rychle se měnící prostředí nabídky, např. elektronika); interaktivní - uživatel si může naklikat co preferuje
+        - Potřebuju znalost domény, např. *chci byt na vesnici -> ok, projdu databázi lokalit a vrátím jenom vesnice* - uživatel si stanoví **omezující podmínky**.
+        - Můžou taky postupným klikáním na množinu věcí určit co tak chtějí
+    - Podle demografie, kombinace přístupů atd.
 
+- Testování kvality
+    - *Offline* - musím mít nějaký baseline dataset a očekávaný doporučení, simuluju uživatele. Probém s overfittingem.
+    - *User-studies* - reálný uživatelé, říkají jestli jo nebo ne. Drahý.
+    - *Online* - A/B testing. Tam ale hrozí, že část uživatelů (která dostane ten "experimentální" doporučovač) může být naštvaná.
 
+- Vysvětlení, důvod doporučení
+    - Když uživateli řeknu proč doporučení dostal, bude víc systému věřit, bude spokojenější.
+    - Rychleji se může rozhodnout, jestli je doporučení správné - pokud je důvod nesmysl, tak nemá cenu poslouchat co doporučil.
+
+- Collaboration filtering je náchylný na útoky. Boti můžou hodnotit můj film dobře, nebo filmy konkurence špatně, a tím ovlivňovat systém.
+    - Jako útočník můžu hodnotit dobrý filmy dobře, špatný špatně, a tím schovat (v průměru) můj útok na konkrétní filmy.
+    - Obrana proti útokům - unsupervised, supervised, podle chování uživatele, srovnání hodnocení proti ostatním, CAPTCHA.
