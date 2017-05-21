@@ -465,13 +465,16 @@ Disallow:
     - Nejčastěji clusteruju uživatele, hledám ty, co mají podobný surfovací vzory - aplikace v segmentaci trhu, personalizaci, komunitách.
 
 - **Association analysis**
-*Poznámka - stejně jako u PageRanku, podívejte se na příklady, tady jenom obecně popisuju kroky.*
 
     - Hledám skupiny předmětů, stránek, které jsou často koupeny/navštíveny dohromady -> doporučení uživatelům "ostatní s tímhle koupili tohle"
     - Algoritmus **apriori**
         - Tvorba pravidel typu *{párky, hořčice, chleba} -> {pivo}*. (*antecedent => consequent*)
-        - **Support** ~ procento nákupů, který obsahujou všechny čtyři věci.
-        - **Confidence** ~ kdo koupí párky, hořčici a chleba koupí taky s *confidence*-pravděpodobností pivo.
+        - **Support**
+            - procento nákupů, který obsahujou všechny čtyři věci
+            - *sup(X) = <počet záznamů obsahující X> / <počet všech záznamů>*
+        - **Confidence**
+            - kdo koupí párky, hořčici a chleba koupí taky s *confidence*-pravděpodobností pivo.
+            - *conf(X=>Y) = sup(X U Y) / sup(X)*
 
             ![](resources/milk-diaper-bread.PNG)
 
@@ -481,6 +484,71 @@ Disallow:
 
         - Kroky:
             1. Vygeneruj dostatečně supportovaný množiny transakcí (množiny, který mají support alespoň `min_sup`
+                1. Z transakcí vem jednoprvkový množiny X, spočti sup(X), nech jenom ty, co mají dostatek support
+                2. Z přeživších množin vytvoř dvouprvkový množiny X, spočti sup(X), nech jenom ty, co mají dostatek support
+                3. Zase, z přeživších dvouprvkových množin vytvoř tříprvkový (sjednocením množin), spočti sup(X), atd.
             2. Vygeneruj dostatečně confidentní asociační pravidla z předchozích setů (pravidla, který mají alespon `min_conf`)
+                1. Z každý množiny co měla dostatečnej support vytvoř permutace dvou podmnožin, což bude pravidlo. Tedy z množiny M, (X U Y) = M, X=>Y.
+                2. Pro každý pravidlo *X => Y* spočti confidence, *conf(X=>Y) = sup(X U Y)/sup(X)*. Pokud je dost velká, uložím pravidlo a opakuju.
 
-        - **TODO** - projet si v sešitě příklad.
+        - Příklad
+
+            > |Transakce|
+            |---------|
+            |1,3,4|
+            |2,3,5|
+            |1,2,3,5|
+            |2,5|
+
+            > Min support 50%, tedy *4/2=2*
+
+            >|Množina|Support|Poznámka|
+            |-------|-------|--------|
+            |1      |2      |        |
+            |2      |3      |        |
+            |3      |3      |        |
+            |~~4~~  |~~1~~  |Vyhazuju|
+            |5      |3      |        |
+            |-------|-------|--------|
+            |~~1,2~~|~~1~~  |Vyhazuju|
+            |1,3    |2      |        |
+            |~~1,5~~|~~1~~  |Vyhazuju|
+            |2,3    |2      |        |
+            |2,5    |3      |        |
+            |3,5    |2      |        |
+            |-------|-------|--------|
+            |~~1,2,3~~|~~1~~  |Vyhazuju|
+            |~~1,3,5~~|~~1~~  |Vyhazuju|
+            |2,3,5  |2      |        |
+
+            > Teď pro každou z množin co má alespoň dva prvky vytvořím kandidátní pravidla, tj.
+            ```
+            1 -> 3
+            3 -> 1
+            2 -> 3
+            3 -> 2
+            ...
+            2,3 -> 5
+            2 -> 3,5
+            ...
+            ```
+            A pro každý pravidlo vypočtu confidence ze supportů jednotlivých množin.
+
+        - Apriori neumí pracovat s váhama jednotlivých featur, takže musím nějak převést matici tak, aby měla jenom 0 a 1:
+            1. Co je 0, bude 0, cokoliv jinýho bude 1.
+            2. Featury rozsekám na intervaly, např. "důležitost" -> *"důležitost <20", "důležitost (20, 50)", ...)* - tady ale vytvářím dimenze
+        - V praxi hledám pravidla jako:
+            `{Referral=GoogleSearch, Hour=Morning} -> {Purchase=True}`
+
+#### Web Analytics
+- Analýza toho, jak se uživatelé chovají na webu, chci celkový přehled o trendech
+- Dvě kategorie:
+    - **Traffic Analysis** - pageviews, sessions, time
+    - **E-commerce Analysis** - Conversion, Revenue, Campaigns, Impressions
+
+## Recommender Systems
+
+
+
+
+
