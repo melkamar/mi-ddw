@@ -117,7 +117,9 @@ Disallow:
 - Spočtu vzdálenost vektoru Query a vektoru *každého* z dokumentů, seřadím od nejbližšího, to jsou moje výsledky.
 
 - Vzdálenosti:
-    - Eukleidovská - klasicky odmocnina ze součtu druhých mocnin, není dobrá, protože když budu mít v query (term1, term2), tak potom s každou další dvojicí termů term1 a term2 v dokumentu bude vzdálenost růst, i když by logicky měla bejt cca stejná.
+    - Eukleidovská - klasicky odmocnina ze součtu druhých mocnin rozdílů, není dobrá, protože když budu mít v query (term1, term2), tak potom s každou další dvojicí termů term1 a term2 v dokumentu bude vzdálenost růst, i když by logicky měla bejt cca stejná.
+
+        ![](resources/euclidean-distance.PNG)
     - Cosinová - lepší, místo vzdálenosti vektorů se počítá úhel mezi nimi, takže předchozí problém nenastává:
 
         ![](resources/cosine-distance.PNG)
