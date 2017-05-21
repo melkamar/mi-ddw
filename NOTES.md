@@ -586,3 +586,29 @@ Disallow:
 - Collaboration filtering je náchylný na útoky. Boti můžou hodnotit můj film dobře, nebo filmy konkurence špatně, a tím ovlivňovat systém.
     - Jako útočník můžu hodnotit dobrý filmy dobře, špatný špatně, a tím schovat (v průměru) můj útok na konkrétní filmy.
     - Obrana proti útokům - unsupervised, supervised, podle chování uživatele, srovnání hodnocení proti ostatním, CAPTCHA.
+
+
+## Data Streams Mining
+- Moc dat, nevejdou se do paměti ani databáze. Nejsou statická, neustále se generují.
+- Web data, sensor data, activity data, spam detection
+- Pokud je rozdělení dat statické, můžu ukusovat kusy streamů a klasicky miningovat. Rozdělení dat se ale může měnit.
+- Obecně:
+
+    ![](resources/stream-mining.PNG)
+
+    - One-pass
+    - Rychlé zpracování každého chunku
+    - Nezpracovávám všechno, nějak si to naskečuju
+
+- **Sampling**
+    - *Reservoir sampling* - udržuju si buffer vzorků, když přijde novej, s určitou pravděpodobností ho uložím a nějakej jinej vyhodim.
+    - *Moving windows* - okénko, udržuju si jen omezenou historii. Tímhle řeším to, že třeba stará data expirovala.
+    - *Sketching* - nesoustředím se jen na poslední kus dat, snažím se sumarizovat všechna data, s různou úrovní detailů
+
+- *Počítání frekvencí* - mám n druhů prvků, chci počítat kolikrát co přišlo
+    - Pokud mám pole o n prvcích, je to easy, ale paměťově náročný.
+    - **Count-min Sketch** - ukládám počty v omezeném poli, indexuju podle hash funkce - ztrácím informaci, počitadlo udává spodní mez (může jich být nakombinováno víc, kvůli kolizi hash fce)
+    - **Lossy Counting** - stream rozdělím na chunky, jeden chunk zpracuju kompletně, po jeho konci od všeho odečtu 1. Tímhle identifikuju časté itemy.
+    - **Distinct items counting** - chci vědět, kolik rozdílných itemů přišlo. Efektivně *HyperLogLog* algoritmus: itemy zahashuju do binární podoby, najdu nejvyšší řetězec trailing nul a odhadnu, že počet unikátních itemů bude 2<sup>n</sup>.
+        - Kdybysme viděli 2 různé itemy, čekal bych 1 trailing nulu.
+        - Kdybysme viděli 4 různé itemy, čekal bych 2 trailing nuly, atd.
