@@ -494,45 +494,45 @@ Disallow:
         - Příklad
 
             > |Transakce|
-            |---------|
-            |1,3,4|
-            |2,3,5|
-            |1,2,3,5|
-            |2,5|
-
+            > |---------|
+            > |1,3,4|
+            > |2,3,5|
+            > |1,2,3,5|
+            > |2,5|
+            >
             > Min support 50%, tedy *4/2=2*
-
+            >
             >|Množina|Support|Poznámka|
-            |-------|-------|--------|
-            |1      |2      |        |
-            |2      |3      |        |
-            |3      |3      |        |
-            |~~4~~  |~~1~~  |Vyhazuju|
-            |5      |3      |        |
-            |-------|-------|--------|
-            |~~1,2~~|~~1~~  |Vyhazuju|
-            |1,3    |2      |        |
-            |~~1,5~~|~~1~~  |Vyhazuju|
-            |2,3    |2      |        |
-            |2,5    |3      |        |
-            |3,5    |2      |        |
-            |-------|-------|--------|
-            |~~1,2,3~~|~~1~~  |Vyhazuju|
-            |~~1,3,5~~|~~1~~  |Vyhazuju|
-            |2,3,5  |2      |        |
-
+            > |-------|-------|--------|
+            > |1      |2      |        |
+            > |2      |3      |        |
+            > |3      |3      |        |
+            > |~~4~~  |~~1~~  |Vyhazuju|
+            > |5      |3      |        |
+            > |-------|-------|--------|
+            > |~~1,2~~|~~1~~  |Vyhazuju|
+            > |1,3    |2      |        |
+            > |~~1,5~~|~~1~~  |Vyhazuju|
+            > |2,3    |2      |        |
+            > |2,5    |3      |        |
+            > |3,5    |2      |        |
+            > |-------|-------|--------|
+            > |~~1,2,3~~|~~1~~  |Vyhazuju|
+            > |~~1,3,5~~|~~1~~  |Vyhazuju|
+            > |2,3,5  |2      |        |
+            >
             > Teď pro každou z množin co má alespoň dva prvky vytvořím kandidátní pravidla, tj.
-            ```
-            1 -> 3
-            3 -> 1
-            2 -> 3
-            3 -> 2
-            ...
-            2,3 -> 5
-            2 -> 3,5
-            ...
-            ```
-            A pro každý pravidlo vypočtu confidence ze supportů jednotlivých množin.
+            > ```
+            > 1 -> 3
+            > 3 -> 1
+            > 2 -> 3
+            > 3 -> 2
+            > ...
+            > 2,3 -> 5
+            > 2 -> 3,5
+            > ...
+            > ```
+            > A pro každý pravidlo vypočtu confidence ze supportů jednotlivých množin.
 
         - Apriori neumí pracovat s váhama jednotlivých featur, takže musím nějak převést matici tak, aby měla jenom 0 a 1:
             1. Co je 0, bude 0, cokoliv jinýho bude 1.
