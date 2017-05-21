@@ -366,6 +366,7 @@ Disallow:
         - Tj. výpočet **nemusí konvergovat**.
     - **Matice G** - Google Matrix
         - Řešením předchozího je matice, kde *S* vynásobím konstantou, *d*, damping faktorem, a ke všem prvkům přičtu *(1-d)/n*. V praxi se používá damping factor ~ 0.85.
+        - Damping factor představuje pravděpodobnost, že náhodný surfař přestane v každém daném kroku dál klikat.
 
             ![](resources/pagerank-gmatrix.PNG)
         - Výpočet probíhá stejně jako na začátku, opakované násobení matice PR vektorem.
