@@ -549,6 +549,12 @@ Disallow:
     - **Traffic Analysis** - pageviews, sessions, time
     - **E-commerce Analysis** - Conversion, Revenue, Campaigns, Impressions
 
+Pojmy:
+- **Konverze obecně**: Naplnení smyslu webu. Třeba: "jak moc generujeme z trafiku peníze?" 
+    - **Konverzní poměr**: Pomer lidí nakoupí / všech co vlezou na stránky.
+    - **Konverzní trychtýř**: To jak lidi propadávají skrze stránku. Přijde jich tam přes reklamu 10k, jenom 2k z nich prokline detail produktu, z nich jenom 200 jich dá item do košíku a nakonec jenom 32 si tu věc skutečně koupí.
+- **Bounce Rate**: Poměr lidí, kteří odejdou hned z první stránky.
+
 ## Recommender Systems
 
 *Kdykoliv tu mluvím o filmech, mám tím na mysli jakýkoliv doporučovaný objekt, takhle to bylo jednodušší napsat.*
