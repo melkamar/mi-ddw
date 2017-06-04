@@ -284,8 +284,11 @@ Disallow:
 
     - **Partitioning**
         - Rozdělení grafu na dva clustery, chceme minimalizovat počet uřízlých hran
-        - *Kernighan-Lin* algoritmus:
-            *TODO? Nevim jestli to má význam.*
+        - *Kernighan-Lin* algoritmus (Objevil se ve zkoušce: [29. 5. 2017](https://fit-wiki.cz/%C5%A1kola/p%C5%99edm%C4%9Bty/mi-ddw/ddw_zkouska_2016-05-29)):
+            - Náhodně rozdělit graf na dvě partitiony.
+            - Spočítat *gain* z prohození dvou nodů mezi partitionama. A pak prohodit ty nejvyšší. Opakovat dokud je co prohazovat.
+            - Gain se počítá jako: `diference_of_cost(a) + diference_of_cost(b) - 2c` | kde `c` je konstanta `1` když je mezi nodama `a b` hrana 0 když není.)
+            - `diference_of_cost(x)` se počítá jako `eternal_cost(x) - internal_cost(x)`. Externí cost je počet hran co leze přes rozdělení partition, Intrní cost je počet hran co vede to stejný partitiony jako je node `x`.
         - *Hierarchical clustering*
             - Sestavení stromu clusterování na základě nějaké podobnosti
         - *Betweenness* - spočtu betweenness všech dvojic uzlů, uříznu hrany s nejmenší hodnotou
@@ -548,6 +551,12 @@ Disallow:
 - Dvě kategorie:
     - **Traffic Analysis** - pageviews, sessions, time
     - **E-commerce Analysis** - Conversion, Revenue, Campaigns, Impressions
+
+Pojmy:
+- **Konverze obecně**: Naplnení smyslu webu. Třeba: "jak moc generujeme z trafiku peníze?" 
+    - **Konverzní poměr**: Pomer lidí nakoupí / všech co vlezou na stránky.
+    - **Konverzní trychtýř**: To jak lidi propadávají skrze stránku. Přijde jich tam přes reklamu 10k, jenom 2k z nich prokline detail produktu, z nich jenom 200 jich dá item do košíku a nakonec jenom 32 si tu věc skutečně koupí.
+- **Bounce Rate**: Poměr lidí, kteří odejdou hned z první stránky.
 
 ## Recommender Systems
 
